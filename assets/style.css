@@ -13,9 +13,11 @@ nav a{color:var(--mut);margin-left:24px;font-size:14px;text-transform:uppercase;
 nav a:hover{color:var(--or)}
 .hero{text-align:center;padding:56px 0 72px;border-bottom:1px solid var(--line);background:radial-gradient(900px 360px at 50% -10%,rgba(255,138,31,.14),transparent 70%)}
 .splash{max-width:640px;margin:0 auto 48px;border:1px solid var(--or);background:#000;padding:18px 24px 26px}
-.splash img{width:min(360px,80%);height:auto;display:block;margin:0 auto}
+.splash img{height:auto;display:block;margin:0 auto}
+.splash img.bolt{width:min(240px,50%);margin-bottom:26px}
+.splash img.word{width:min(500px,88%)}
 .splash .name{font-size:clamp(26px,4vw,36px);font-weight:700;color:var(--or);margin-top:4px}
-.splash .line{color:var(--mut);font-size:15px;margin-top:6px}
+.splash .line{color:var(--mut);font-size:15px;margin-top:22px}
 .splash .bar{height:6px;border-radius:3px;background:var(--panel2);margin:22px 36px 0;overflow:hidden}
 .splash .bar i{display:block;height:100%;width:100%;background:var(--or);border-radius:3px}
 .hero h1{font-size:clamp(28px,4.2vw,46px);line-height:1.15;margin:0 auto 20px;max-width:18em}

@@ -54,7 +54,7 @@ def page(site: dict, title: str, body: str, depth: int, desc: str = "") -> str:
 <link rel="stylesheet" href="{rel}assets/style.css">
 </head><body>
 <header class="top"><div class="wrap">
-<a class="brand" href="{rel}index.html"><img src="{rel}assets/icon_fulmine.png" alt="">Tornado <b>Laboratori</b></a>
+<a class="brand" href="{rel}index.html">Tornado <b>Laboratori</b></a>
 <nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav>
 </div></header>
 {body}
@@ -136,8 +136,8 @@ def build(out: Path):
                    f' <a class="btn off" href="https://github.com/{E(repo.split("/")[0])}">Profilo GitHub</a>')
     body = f"""
 <div class="hero"><div class="wrap">
-<div class="splash"><img src="assets/logo_tornado.png" alt="Tornado Laboratori">
-<div class="name">{E(site['title'])}</div>
+<div class="splash"><img class="bolt" src="assets/fulmine.png" alt="">
+<img class="word" src="assets/scritta.png" alt="{E(site['title'])}">
 <div class="line">{E(site['tagline'])} &nbsp;·&nbsp; {E(site.get('callsign',''))} &nbsp;·&nbsp; {E(site.get('location',''))}</div>
 <div class="bar"><i></i></div></div>
 <h1>{E(h['headline'])}</h1><p>{E(h['text'])}</p>
