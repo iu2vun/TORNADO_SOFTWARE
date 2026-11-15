@@ -57,7 +57,7 @@ def page(site: dict, title: str, body: str, depth: int, desc: str = "") -> str:
 </head><body>
 <header class="top"><div class="wrap">
 <a class="brand" href="{rel}index.html"><img src="{rel}assets/scritta.png" alt="Tornado Laboratori"></a>
-<nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav>
+<nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#chisono">Chi sono</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav>
 </div></header>
 {body}
 <footer><div class="wrap"><span>© {E(site['title'])} — {E(site.get('location',''))}</span>
@@ -117,6 +117,14 @@ def build(out: Path):
     acts = "".join(
         f'<div class="card"><span class="icon">{E(a["icon"])}</span><h3>{E(a["title"])}</h3><p>{E(a["text"])}</p></div>'
         for a in site["activities"])
+    ab = site.get("about")
+    about = ""
+    if ab:
+        paras = "".join(f"<p>{E(t)}</p>" for t in ab["text"])
+        li = f'<p><a class="btn ghost" href="{E(ab["linkedin"])}" target="_blank" rel="noopener">LinkedIn</a></p>' if ab.get("linkedin") else ""
+        about = (f'<section id="chisono"><div class="wrap"><h2>Chi sono</h2>'
+                 f'<div class="card about"><h3>{E(ab["name"])}</h3>'
+                 f'<p class="role">{E(ab["role"])} — {E(ab.get("location",""))}</p>{paras}{li}</div></div></section>')
     cats = sorted({s.get("category", "Altro") for s in sws})
     filt = '<div class="filters"><button class="on" data-c="*">Tutti</button>' + "".join(
         f'<button data-c="{E(c)}">{E(c)}</button>' for c in cats) + "</div>"
@@ -145,6 +153,7 @@ def build(out: Path):
 </div></div>
 <section id="laboratorio"><div class="wrap"><h2>Il laboratorio</h2>
 <p class="sub">Attività di {E(site['title'])}.</p><div class="grid">{acts}</div></div></section>
+{about}
 <section id="software"><div class="wrap"><h2>Software</h2>
 <p class="sub">Download liberi. Ogni scheda riporta versione, requisiti e checksum.</p>{filt}<div class="grid">{cards}</div></div></section>
 <section id="contatti" style="border:0"><div class="wrap"><h2>Contatti</h2>

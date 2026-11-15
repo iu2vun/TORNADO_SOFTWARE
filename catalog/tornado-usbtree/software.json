@@ -1,18 +1,30 @@
 {
   "name": "Tornado USB Tree View",
-  "tagline": "",
+  "tagline": "Albero completo dei dispositivi USB di Windows, con descrittori, dump esadecimale e monitor di sistema",
   "category": "Strumenti",
   "order": 14,
   "description": [
-    "Programma indipendente ricavato dalla Tornado Suite (stesso codice, stessa interfaccia nero/arancione). Cartella autonoma: tutto il necessario e il `build.bat` per l'eseguibile."
+    "Tornado USB Tree View mostra l'intera topologia USB del PC (controller host, hub, porte, dispositivi) interrogando direttamente gli hub con le IOCTL di Windows. Per ogni nodo espone proprieta', descrittori decodificati e dump esadecimale grezzo, con nomi di costruttore e prodotto risolti dal database usb.ids.",
+    "Il programma segue i collegamenti in tempo reale: ogni connessione o disconnessione viene registrata nel log con l'orario. Gli snapshot JSON permettono di salvare lo stato dei bus e confrontarlo in seguito con una nuova scansione.",
+    "La scheda Sistema aggiunge un monitor diagnostico (CPU, memoria, GPU, dischi, rete, sensori, processi) con grafici in tempo reale, soglie di allarme e registrazione CSV: utile per correlare problemi USB con carico, temperature e alimentazione."
   ],
-  "features": [],
+  "features": [
+    "Albero USB completo: controller host, root hub, hub, porte e dispositivi",
+    "Descrittori decodificati (device, configuration, interface, endpoint, BOS) e dump esadecimale",
+    "Nomi costruttore/prodotto da database usb.ids",
+    "Aggiornamento automatico alla connessione/disconnessione, con log CONNESSO/DISCONNESSO",
+    "Snapshot JSON e confronto tra due scansioni con evidenza delle differenze",
+    "Esportazione in JSON, HTML e testo",
+    "Monitor di sistema: CPU, RAM, GPU (NVIDIA via NVML), dischi, rete, sensori, processi",
+    "Soglie di allarme, registrazione su CSV e snapshot diagnostico",
+    "Tema nero/arancione della Tornado Suite, diagnostica integrata (Ctrl+Shift+D)"
+  ],
   "version": "0.1.0",
   "released": "2026-11-16",
   "platforms": [
     "Windows 10/11 x64"
   ],
-  "requirements": "",
+  "requirements": "Windows 10/11 x64. Nessuna installazione di Python necessaria con l'installer. Per leggere temperature, ventole e tensioni avviare come amministratore (opzione --admin).",
   "downloads": [
     {
       "label": "Installer Windows",

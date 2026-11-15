@@ -7,15 +7,50 @@
   "callsign": "IU2VUN",
   "location": "Varese, Italia",
   "hero": {
-    "headline": "Strumenti software per il banco di misura",
-    "text": "Tornado Laboratori progetta e sviluppa software per RF, elettronica, avionica e strumentazione: dall'analisi di parametri S al controllo di VNA e SDR, fino ai tool di collaudo. Tutto scaricabile da qui, da qualsiasi PC."
+    "headline": "Strumenti e software: tutto orientato alla misura",
+    "text": "Tornado Laboratori progetta e sviluppa hardware e software per RF, elettronica, avionica e strumentazione: dall'analisi di parametri S al controllo di VNA e SDR, fino ai tool di collaudo."
+  },
+  "about": {
+    "name": "Riccardo Losego",
+    "role": "RF/Avionics Technician · Radioamatore IU2VUN · Fondatore di Tornado Laboratori",
+    "location": "Varese, Italia",
+    "text": [
+      "Tecnico RF e avionica, perito industriale (ITIS «G. Feltrinelli»). Fotografo, progetto e riparo cose: mi piace lavorare con radio, aerei e fotografia. Sono radioamatore (IU2VUN).",
+      "Il mio mestiere è la misura: metrologia, calibrazione, ingegneria RF, service e troubleshooting. Ho iniziato nel 2020 come RF Metrologist in TESI (Brugherio), poi RF & Avionics Metrologist in MPG Instruments (Senago) e dal 2025 sono tecnico progettista RF R&D in IPR Europe (Italiana Ponti Radio), a Varese.",
+      "Fuori dal lavoro costruisco i miei strumenti: decoder per segnali aeronautici in Modo S, ricezione di satelliti meteo (APT da NOAA, immagini AVHRR da MetOp-C), software di misura e controllo in Python/Qt. Se per costruire qualcosa c'è una via semplice e una complicata (e strana), scelgo sempre la seconda. Tutto il software di questo sito è open source."
+    ],
+    "linkedin": "https://www.linkedin.com/in/riccardo-losego-37a14820b/"
   },
   "activities": [
-    {"icon": "RF", "title": "Misure RF e microonde", "text": "Software per VNA, analizzatori di spettro e generatori: calibrazione SOLT, parametri S, dominio del tempo, antenne e filtri fino a 26,5 GHz."},
-    {"icon": "SDR", "title": "SDR e demodulazione", "text": "Applicazioni per LibreSDR/ZynqSDR, RTL-SDR e HackRF: spettro, modulazioni digitali, analisi GNSS e segnali avionici."},
-    {"icon": "EMB", "title": "Embedded e firmware", "text": "Firmware ESP32, PIC e MCU, controller di rete e schede di misura autocostruite, con GUI di controllo dedicate."},
-    {"icon": "TST", "title": "Collaudo e automazione", "text": "Banchi di collaudo automatici per DUT RF, rapporti di misura con limiti pass/fail, driver SCPI/GPIB/seriale."},
-    {"icon": "AVI", "title": "Avionica", "text": "Strumentazione e analisi per ILS, VOR, MLS e transponder."},
-    {"icon": "LAB", "title": "Riparazione e sviluppo hardware", "text": "Diagnosi di apparati di misura e progettazione di hardware su misura."}
+    {
+      "icon": "RF",
+      "title": "Misure RF e microonde",
+      "text": "Software per VNA, analizzatori di spettro e generatori: calibrazione SOLT, parametri S, dominio del tempo, antenne e filtri fino a 26,5 GHz."
+    },
+    {
+      "icon": "SDR",
+      "title": "SDR e demodulazione",
+      "text": "Applicazioni per LibreSDR/ZynqSDR, RTL-SDR e HackRF: spettro, modulazioni digitali, analisi GNSS e segnali avionici."
+    },
+    {
+      "icon": "EMB",
+      "title": "Embedded e firmware",
+      "text": "Firmware ESP32, PIC e MCU, controller di rete e schede di misura autocostruite, con GUI di controllo dedicate."
+    },
+    {
+      "icon": "TST",
+      "title": "Collaudo e automazione",
+      "text": "Banchi di collaudo automatici per DUT RF, rapporti di misura con limiti pass/fail, driver SCPI/GPIB/seriale."
+    },
+    {
+      "icon": "AVI",
+      "title": "Avionica",
+      "text": "Strumentazione e analisi per ILS, VOR, MLS e transponder."
+    },
+    {
+      "icon": "LAB",
+      "title": "Riparazione e sviluppo hardware",
+      "text": "Diagnosi di apparati di misura e progettazione di hardware su misura."
+    }
   ]
 }
