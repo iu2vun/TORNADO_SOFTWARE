@@ -1,23 +1,30 @@
-:root{--bg:#0b0b0c;--panel:#151517;--panel2:#1c1c1f;--line:#2a2a2e;--fg:#ececec;--mut:#9a9aa2;--or:#ff7a00;--or2:#ff9a3c}
+:root{--bg:#000;--panel:#121417;--panel2:#1a1d22;--line:#2c313a;--fg:#ececec;--mut:#8a92a0;--or:#ff8a1f;--or2:#ffa043}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 "Bahnschrift","Segoe UI",system-ui,sans-serif}
 a{color:var(--or);text-decoration:none}a:hover{color:var(--or2)}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-header.top{position:sticky;top:0;z-index:10;background:rgba(11,11,12,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top{position:sticky;top:0;z-index:10;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-.brand{font-weight:700;font-size:18px;letter-spacing:.06em;color:var(--fg);text-transform:uppercase}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:.06em;color:var(--fg);text-transform:uppercase}
+.brand img{height:32px;width:auto;display:block}
 .brand b{color:var(--or)}
 nav a{color:var(--mut);margin-left:24px;font-size:14px;text-transform:uppercase;letter-spacing:.08em}
 nav a:hover{color:var(--or)}
-.hero{padding:96px 0 72px;border-bottom:1px solid var(--line);background:radial-gradient(900px 340px at 80% -10%,rgba(255,122,0,.16),transparent 70%)}
-.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.1;margin:0 0 20px;max-width:16em}
+.hero{text-align:center;padding:56px 0 72px;border-bottom:1px solid var(--line);background:radial-gradient(900px 360px at 50% -10%,rgba(255,138,31,.14),transparent 70%)}
+.splash{max-width:640px;margin:0 auto 48px;border:1px solid var(--or);background:#000;padding:18px 24px 26px}
+.splash img{width:min(360px,80%);height:auto;display:block;margin:0 auto}
+.splash .name{font-size:clamp(26px,4vw,36px);font-weight:700;color:var(--or);margin-top:4px}
+.splash .line{color:var(--mut);font-size:15px;margin-top:6px}
+.splash .bar{height:6px;border-radius:3px;background:var(--panel2);margin:22px 36px 0;overflow:hidden}
+.splash .bar i{display:block;height:100%;width:100%;background:var(--or);border-radius:3px}
+.hero h1{font-size:clamp(28px,4.2vw,46px);line-height:1.15;margin:0 auto 20px;max-width:18em}
 .hero h1 span{color:var(--or)}
-.hero p{color:var(--mut);max-width:42em;font-size:18px;margin:0 0 32px}
+.hero p{color:var(--mut);max-width:42em;font-size:18px;margin:0 auto 32px}
 .btn{display:inline-block;background:var(--or);color:#000;font-weight:700;padding:11px 22px;border-radius:4px;border:0;cursor:pointer;font:inherit;font-weight:700}
 .btn:hover{background:var(--or2);color:#000}
 .btn.ghost{background:transparent;color:var(--or);border:1px solid var(--or)}
-.btn.ghost:hover{background:rgba(255,122,0,.12);color:var(--or2)}
+.btn.ghost:hover{background:rgba(255,138,31,.12);color:var(--or2)}
 .btn.off{background:var(--panel2);color:var(--mut);cursor:default}
 section{padding:72px 0;border-bottom:1px solid var(--line)}
 h2{font-size:28px;margin:0 0 8px}

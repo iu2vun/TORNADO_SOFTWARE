@@ -19,13 +19,13 @@ def load_json(p: Path):
 def placeholder_svg(name: str, cat: str) -> str:
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">'
-        '<rect width="800" height="500" fill="#101012"/>'
+        '<rect width="800" height="500" fill="#000"/>'
         '<g stroke="#26262a" stroke-width="1">'
         + "".join(f'<line x1="{x}" y1="0" x2="{x}" y2="500"/>' for x in range(0, 801, 50))
         + "".join(f'<line x1="0" y1="{y}" x2="800" y2="{y}"/>' for y in range(0, 501, 50))
         + "</g>"
         '<path d="M0 330 C100 330 120 140 220 140 S340 380 440 380 S560 190 660 190 S760 300 800 300" '
-        'fill="none" stroke="#ff7a00" stroke-width="3"/>'
+        'fill="none" stroke="#ff8a1f" stroke-width="3"/>'
         f'<text x="40" y="450" fill="#ececec" font-family="Segoe UI,sans-serif" font-size="38" font-weight="700">{E(name)}</text>'
         f'<text x="40" y="480" fill="#9a9aa2" font-family="Segoe UI,sans-serif" font-size="18">{E(cat)}</text>'
         "</svg>"
@@ -49,11 +49,12 @@ def page(site: dict, title: str, body: str, depth: int, desc: str = "") -> str:
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(full)}</title>
 <meta name="description" content="{E(desc or site['tagline'])}">
-<meta name="theme-color" content="#0b0b0c">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" href="{rel}assets/icon_fulmine.png">
 <link rel="stylesheet" href="{rel}assets/style.css">
 </head><body>
 <header class="top"><div class="wrap">
-<a class="brand" href="{rel}index.html">Tornado <b>Laboratori</b></a>
+<a class="brand" href="{rel}index.html"><img src="{rel}assets/icon_fulmine.png" alt="">Tornado <b>Laboratori</b></a>
 <nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav>
 </div></header>
 {body}
@@ -135,6 +136,10 @@ def build(out: Path):
                    f' <a class="btn off" href="https://github.com/{E(repo.split("/")[0])}">Profilo GitHub</a>')
     body = f"""
 <div class="hero"><div class="wrap">
+<div class="splash"><img src="assets/logo_tornado.png" alt="Tornado Laboratori">
+<div class="name">{E(site['title'])}</div>
+<div class="line">{E(site['tagline'])} &nbsp;·&nbsp; {E(site.get('callsign',''))} &nbsp;·&nbsp; {E(site.get('location',''))}</div>
+<div class="bar"><i></i></div></div>
 <h1>{E(h['headline'])}</h1><p>{E(h['text'])}</p>
 <a class="btn" href="#software">Scarica i software</a> <a class="btn ghost" href="#laboratorio">Il laboratorio</a>
 </div></div>
