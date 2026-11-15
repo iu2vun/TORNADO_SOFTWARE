@@ -1,0 +1,6 @@
+# Dipendenze di Tornado Logic. Soglie minime larghe; build.bat salva requirements.lock.txt dopo la prima build riuscita.
+numpy>=1.26
+PySide6>=6.6
+pyqtgraph>=0.13
+pillow>=10.1  # solo per make_icon.py (genera l'icona in build)
+pyserial>=3.5

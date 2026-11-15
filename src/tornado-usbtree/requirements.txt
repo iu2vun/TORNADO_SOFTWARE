@@ -1,0 +1,10 @@
+numpy
+psutil
+pyqtgraph
+PySide6>=6.6
+# opzionale (non installato di default): LibreHardwareMonitor
+# opzionale (non installato di default): clr
+# opzionale (non installato di default): pynvml
+# opzionale (non installato di default): pythonnet
+# opzionale (non installato di default): pyvisa
+# opzionale (non installato di default): serial

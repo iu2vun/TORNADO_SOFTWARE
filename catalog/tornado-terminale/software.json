@@ -24,13 +24,19 @@
       "label": "Installer Windows",
       "file": "TornadoTerminale-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": ""
+      "sha256": "23d3466b559befafd6b371bdcc384ec4bba6409a61a44218829d22206cc17c4d"
     },
     {
       "label": "Manuale PDF",
       "file": "Manuale_TornadoTerminale.pdf",
       "platform": "PDF",
       "sha256": ""
+    },
+    {
+      "label": "Sorgenti Python (zip)",
+      "file": "tornado-terminale-sorgenti-0.1.0.zip",
+      "platform": "Python",
+      "sha256": "f3fc369ae8f289cc25b01990d577762c5779b37287cc8cd1de503981bd1d9723"
     }
   ],
   "screenshots": [
@@ -46,5 +52,6 @@
         "Prima versione pubblica."
       ]
     }
-  ]
+  ],
+  "source_url": "https://github.com/iu2vun/TORNADO_SOFTWARE/tree/main/src/tornado-terminale"
 }

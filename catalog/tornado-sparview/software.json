@@ -26,13 +26,19 @@
       "label": "Installer Windows",
       "file": "TornadoSParView-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": ""
+      "sha256": "134e0834acef93f7aaebd686409e1ddc96636ddd48ed2df35389560b44e82989"
     },
     {
       "label": "Manuale PDF",
       "file": "Manuale_TornadoSParView.pdf",
       "platform": "PDF",
       "sha256": ""
+    },
+    {
+      "label": "Sorgenti Python (zip)",
+      "file": "tornado-sparview-sorgenti-0.1.0.zip",
+      "platform": "Python",
+      "sha256": "88b2fc901647bf5c9a98f5e1399ca303c7083328db1435a77291517064439738"
     }
   ],
   "screenshots": [
@@ -51,5 +57,6 @@
         "Prima versione pubblica."
       ]
     }
-  ]
+  ],
+  "source_url": "https://github.com/iu2vun/TORNADO_SOFTWARE/tree/main/src/tornado-sparview"
 }

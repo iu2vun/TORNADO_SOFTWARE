@@ -24,13 +24,19 @@
       "label": "Installer Windows",
       "file": "TornadoSniffer-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": ""
+      "sha256": "747c89d6655277476d438c7b35fca481930e662cce5a91c2797ab04df754052c"
     },
     {
       "label": "Manuale PDF",
       "file": "Manuale_TornadoSniffer.pdf",
       "platform": "PDF",
       "sha256": ""
+    },
+    {
+      "label": "Sorgenti Python (zip)",
+      "file": "tornado-sniffer-sorgenti-0.1.0.zip",
+      "platform": "Python",
+      "sha256": "dd6a0b733160a905d30915511f4f80371c7816b322e48551fe33af82f317cbf1"
     }
   ],
   "screenshots": [
@@ -47,5 +53,6 @@
         "Prima versione pubblica."
       ]
     }
-  ]
+  ],
+  "source_url": "https://github.com/iu2vun/TORNADO_SOFTWARE/tree/main/src/tornado-sniffer"
 }

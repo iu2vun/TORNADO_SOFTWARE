@@ -26,13 +26,19 @@
       "label": "Installer Windows",
       "file": "TornadoVNA-Setup-1.0.0.exe",
       "platform": "Windows",
-      "sha256": ""
+      "sha256": "d7617337681c0283f35bbefafbb99c1c984fbf3aab5da62769aa39140d1e50eb"
     },
     {
       "label": "Manuale PDF",
       "file": "Manuale_TornadoVNA.pdf",
       "platform": "PDF",
-      "sha256": ""
+      "sha256": "33fc06b30df76dce47d06054b2402338c1e75f2d09a3ec02a2a7b55615a0b7cd"
+    },
+    {
+      "label": "Sorgenti Python (zip)",
+      "file": "tornadovna-sorgenti-1.0.0.zip",
+      "platform": "Python",
+      "sha256": "1f4e85852dc78b026f65e54658cd696c49352f1b21bae8e8b05dcaaf24a2b451"
     }
   ],
   "screenshots": [
@@ -51,5 +57,6 @@
         "Prima versione pubblica."
       ]
     }
-  ]
+  ],
+  "source_url": "https://github.com/iu2vun/TORNADO_SOFTWARE/tree/main/src/tornadovna"
 }

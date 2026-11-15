@@ -1,0 +1,5 @@
+numpy
+PySide6>=6.6
+scipy
+# opzionale (non installato di default): pyvisa
+# opzionale (non installato di default): serial

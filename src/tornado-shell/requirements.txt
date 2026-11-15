@@ -1,0 +1,5 @@
+PySide6>=6.6
+pyte
+pywinpty; sys_platform == "win32"
+# opzionale (non installato di default): pyvisa
+# opzionale (non installato di default): serial

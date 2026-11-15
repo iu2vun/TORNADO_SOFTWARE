@@ -15,8 +15,8 @@
     "Memoria Flash/RAM con storico e analisi dei simboli",
     "Gestore schede e librerie che modificano platformio.ini"
   ],
-  "version": "0.1.0",
-  "released": "2026-11-15",
+  "version": "0.2",
+  "released": "2026-11-16",
   "platforms": [
     "Windows 10/11 x64"
   ],
@@ -24,15 +24,21 @@
   "downloads": [
     {
       "label": "Installer Windows",
-      "file": "TornadoESPIDE-Setup-0.1.0.exe",
+      "file": "TornadoESPIDE-Setup-0.2.exe",
       "platform": "Windows",
-      "sha256": ""
+      "sha256": "9b96931844b42efc3020e6497b774c440813817529e995f17d85698b429d4d82"
     },
     {
       "label": "Manuale PDF",
       "file": "Manuale_TornadoESPIDE.pdf",
       "platform": "PDF",
       "sha256": ""
+    },
+    {
+      "label": "Sorgenti Python (zip)",
+      "file": "tornado-ide-esp32-sorgenti-0.2.zip",
+      "platform": "Python",
+      "sha256": "f4c965187567495a81a322ea929e7d0d905bf73d2a7822777ef6c79a1e0e7ec2"
     }
   ],
   "screenshots": [
@@ -44,11 +50,19 @@
   ],
   "changelog": [
     {
+      "version": "0.2",
+      "date": "2026-11-16",
+      "notes": [
+        "Aggiornamento."
+      ]
+    },
+    {
       "version": "0.1.0",
       "date": "2026-11-15",
       "notes": [
         "Prima versione pubblica."
       ]
     }
-  ]
+  ],
+  "source_url": "https://github.com/iu2vun/TORNADO_SOFTWARE/tree/main/src/tornado-ide-esp32"
 }

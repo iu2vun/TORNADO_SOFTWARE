@@ -25,13 +25,19 @@
       "label": "Installer Windows",
       "file": "TornadoLogic-Setup-0.1.exe",
       "platform": "Windows",
-      "sha256": ""
+      "sha256": "bac21aa7dc17afef68ef92b77c123669a34407068a1ed2f922ac7a32f42e1333"
     },
     {
       "label": "Manuale PDF",
       "file": "Manuale_TornadoLogic.pdf",
       "platform": "PDF",
-      "sha256": ""
+      "sha256": "9fafefa1585cf1f291f257b2b4f6ee4e6e70e0db3db53e595c17fc0bdee1b46b"
+    },
+    {
+      "label": "Sorgenti Python (zip)",
+      "file": "tornado-logic-sorgenti-0.1.zip",
+      "platform": "Python",
+      "sha256": "c080ca1542db175557cb5a3980a164132e06bd4e3b2ed925856cb9ff3a05c7eb"
     }
   ],
   "screenshots": [
@@ -51,5 +57,6 @@
         "Prima versione pubblica."
       ]
     }
-  ]
+  ],
+  "source_url": "https://github.com/iu2vun/TORNADO_SOFTWARE/tree/main/src/tornado-logic"
 }
