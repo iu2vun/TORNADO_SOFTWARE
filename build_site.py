@@ -122,9 +122,11 @@ def build(out: Path):
     if ab:
         paras = "".join(f"<p>{E(t)}</p>" for t in ab["text"])
         li = f'<p><a class="btn ghost" href="{E(ab["linkedin"])}" target="_blank" rel="noopener">LinkedIn</a></p>' if ab.get("linkedin") else ""
+        ph = next((f for f in ("riccardo.jpg", "riccardo.jpeg", "riccardo.png") if (ROOT / "assets" / f).is_file()), None)
+        img = f'<img class="photo" src="assets/{ph}" alt="{E(ab["name"])}">' if ph else ""
         about = (f'<section id="chisono"><div class="wrap"><h2>Chi sono</h2>'
-                 f'<div class="card about"><h3>{E(ab["name"])}</h3>'
-                 f'<p class="role">{E(ab["role"])} — {E(ab.get("location",""))}</p>{paras}{li}</div></div></section>')
+                 f'<div class="card about{" withphoto" if ph else ""}">{img}<div><h3>{E(ab["name"])}</h3>'
+                 f'<p class="role">{E(ab["role"])} — {E(ab.get("location",""))}</p>{paras}{li}</div></div></div></section>')
     cats = sorted({s.get("category", "Altro") for s in sws})
     filt = '<div class="filters"><button class="on" data-c="*">Tutti</button>' + "".join(
         f'<button data-c="{E(c)}">{E(c)}</button>' for c in cats) + "</div>"
