@@ -9,6 +9,8 @@ import argparse, html, json, shutil, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+import hashlib
+CSS_V = hashlib.md5((ROOT / "assets" / "style.css").read_bytes()).hexdigest()[:8]
 E = html.escape
 
 
@@ -51,10 +53,10 @@ def page(site: dict, title: str, body: str, depth: int, desc: str = "") -> str:
 <meta name="description" content="{E(desc or site['tagline'])}">
 <meta name="theme-color" content="#000000">
 <link rel="icon" type="image/png" href="{rel}assets/icon_fulmine.png">
-<link rel="stylesheet" href="{rel}assets/style.css">
+<link rel="stylesheet" href="{rel}assets/style.css?v={CSS_V}">
 </head><body>
 <header class="top"><div class="wrap">
-<a class="brand" href="{rel}index.html">Tornado <b>Laboratori</b></a>
+<a class="brand" href="{rel}index.html"><img src="{rel}assets/scritta.png" alt="Tornado Laboratori"></a>
 <nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav>
 </div></header>
 {body}
@@ -136,10 +138,8 @@ def build(out: Path):
                    f' <a class="btn off" href="https://github.com/{E(repo.split("/")[0])}">Profilo GitHub</a>')
     body = f"""
 <div class="hero"><div class="wrap">
-<div class="splash"><img class="bolt" src="assets/fulmine.png" alt="">
-<img class="word" src="assets/scritta.png" alt="{E(site['title'])}">
-<div class="line">{E(site['tagline'])} &nbsp;·&nbsp; {E(site.get('callsign',''))} &nbsp;·&nbsp; {E(site.get('location',''))}</div>
-<div class="bar"><i></i></div></div>
+<div class="splash"><img class="bolt" src="assets/fulmine.png" alt="Tornado Laboratori">
+<div class="line">{E(site['tagline'])} &nbsp;·&nbsp; {E(site.get('callsign',''))} &nbsp;·&nbsp; {E(site.get('location',''))}</div></div>
 <h1>{E(h['headline'])}</h1><p>{E(h['text'])}</p>
 <a class="btn" href="#software">Scarica i software</a> <a class="btn ghost" href="#laboratorio">Il laboratorio</a>
 </div></div>
