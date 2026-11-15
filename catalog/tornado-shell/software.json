@@ -1,0 +1,48 @@
+{
+  "name": "Tornado Shell",
+  "tagline": "Terminale di sistema nello stile Tornado",
+  "category": "Utilità",
+  "order": 6,
+  "description": [
+    "Apre la shell di sistema in una finestra con un terminale VT completo (emulazione ANSI, colori a 256, storico di scorrimento) nello stile Tornado.",
+    "Su Windows propone PowerShell 7, Windows PowerShell, Prompt dei comandi, WSL e Git Bash quando presenti."
+  ],
+  "features": [
+    "Emulazione ANSI con colori a 256 e storico di scorrimento",
+    "Scelta del profilo di shell dalla barra",
+    "Selezione con il mouse, copia con Ctrl+Maiusc+C, scorrimento dello storico con rotella e Maiusc+PagSu/PagGiu"
+  ],
+  "version": "0.1.0",
+  "released": "2026-11-15",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "Windows 10/11 x64",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoShell-Setup-0.1.0.exe",
+      "platform": "Windows",
+      "sha256": ""
+    },
+    {
+      "label": "Manuale PDF",
+      "file": "Manuale_TornadoShell.pdf",
+      "platform": "PDF",
+      "sha256": ""
+    }
+  ],
+  "screenshots": [
+    "img/01_finestra.png",
+    "img/02_uso.png"
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-15",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ]
+}

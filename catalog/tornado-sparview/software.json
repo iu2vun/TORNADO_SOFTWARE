@@ -1,0 +1,55 @@
+{
+  "name": "Tornado SParView",
+  "tagline": "Visualizzatore e analisi di parametri S",
+  "category": "RF / Misure",
+  "order": 2,
+  "description": [
+    "Visualizzatore e analizzatore di parametri S per il post-processing delle misure da VNA.",
+    "Legge Touchstone (.s1p … .s16p), CITIfile e CSV e li mostra su più grafici affiancati con marker, analisi, trasformazioni e dominio del tempo."
+  ],
+  "features": [
+    "Grafici rettangolari, Smith e dominio del tempo, fino a quattro con asse X collegato",
+    "Marker con delta e ricerca di massimi/minimi",
+    "Analisi: banda, statistiche, passività, reciprocità, stabilità (K, mu, MAG/MSG)",
+    "Rinormalizzazione Z0, port extension, de-embedding, cascata, mixed-mode",
+    "IFFT con finestra, asse in distanza e time gating",
+    "Math, P1dB e scheda Info"
+  ],
+  "version": "0.1.0",
+  "released": "2026-11-15",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "Nessun hardware: elabora file di misura",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoSParView-Setup-0.1.0.exe",
+      "platform": "Windows",
+      "sha256": ""
+    },
+    {
+      "label": "Manuale PDF",
+      "file": "Manuale_TornadoSParView.pdf",
+      "platform": "PDF",
+      "sha256": ""
+    }
+  ],
+  "screenshots": [
+    "img/01_finestra.png",
+    "img/02_analisi.png",
+    "img/03_trasforma.png",
+    "img/04_tempo.png",
+    "img/05_math.png",
+    "img/06_p1db.png"
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-15",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ]
+}

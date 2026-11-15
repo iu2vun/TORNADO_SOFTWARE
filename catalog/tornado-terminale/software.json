@@ -1,0 +1,50 @@
+{
+  "name": "Tornado Terminale",
+  "tagline": "Terminale ANSI/VT100 seriale e TCP",
+  "category": "Embedded / Digitale",
+  "order": 5,
+  "description": [
+    "Terminale ANSI/VT100 per collegarsi a schede e strumenti via porta seriale o rete TCP, con uno o due terminali affiancati e interazione carattere per carattere."
+  ],
+  "features": [
+    "Seriale (baud, bit, parità, stop, controllo di flusso, linee RTS/DTR e LED di stato) o TCP",
+    "Macro con pause e caratteri di controllo",
+    "Trasferimento file: ASCII con ritardi, XMODEM, XMODEM-CRC, XMODEM-1K, YMODEM",
+    "Log su file (testo con ora o esadecimale) e vista esadecimale in tempo reale",
+    "Riconnessione automatica e rilevamento delle porte"
+  ],
+  "version": "0.1.0",
+  "released": "2026-11-15",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "Porta seriale o dispositivo raggiungibile via TCP",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoTerminale-Setup-0.1.0.exe",
+      "platform": "Windows",
+      "sha256": ""
+    },
+    {
+      "label": "Manuale PDF",
+      "file": "Manuale_TornadoTerminale.pdf",
+      "platform": "PDF",
+      "sha256": ""
+    }
+  ],
+  "screenshots": [
+    "img/01_finestra.png",
+    "img/02_connesso.png",
+    "img/03_due_terminali.png"
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-15",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ]
+}

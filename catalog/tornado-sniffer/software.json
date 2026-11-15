@@ -1,0 +1,51 @@
+{
+  "name": "Tornado Serial Sniffer",
+  "tagline": "Sniffer seriale a mosaico con decoder",
+  "category": "Embedded / Digitale",
+  "order": 4,
+  "description": [
+    "Sniffer per porte seriali con visualizzazione a mosaico: ascolta una o più porte in parallelo, mostra il traffico in viste affiancate, lo registra su file e lo decodifica."
+  ],
+  "features": [
+    "Più canali contemporanei con baud, bit, parità e stop configurabili",
+    "Viste: Dati, Terminale, Tabella, Timeline, Traffico, Protocollo, Statistiche, Cerca, Terminale ANSI/VT100",
+    "Decoder Modbus RTU/ASCII, NMEA, AT, u-blox UBX, MAVLink, GRBL, SBUS con riconoscimento automatico",
+    "Registrazione e riproduzione a velocità variabile, anche verso porte reali",
+    "Trigger, ricerca (testo, esadecimale, regex) ed esportazione"
+  ],
+  "version": "0.1.0",
+  "released": "2026-11-15",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "Una o più porte seriali",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoSniffer-Setup-0.1.0.exe",
+      "platform": "Windows",
+      "sha256": ""
+    },
+    {
+      "label": "Manuale PDF",
+      "file": "Manuale_TornadoSniffer.pdf",
+      "platform": "PDF",
+      "sha256": ""
+    }
+  ],
+  "screenshots": [
+    "img/01_finestra.png",
+    "img/02_tabella_decoder.png",
+    "img/03_statistiche_cerca.png",
+    "img/04_dati_terminale.png"
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-15",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ]
+}

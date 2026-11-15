@@ -1,0 +1,55 @@
+{
+  "name": "Tornado Logic",
+  "tagline": "Analizzatore logico USB 8 canali 24 MHz",
+  "category": "Embedded / Digitale",
+  "order": 3,
+  "description": [
+    "Programma di controllo, misura e analisi per l'analizzatore logico USB a 8 canali e 24 MHz (cloni Saleae basati su Cypress FX2, riconosciuti da sigrok come fx2lafw).",
+    "Ad ogni acquisizione lancia sigrok-cli e ne legge i campioni, poi mostra le forme d'onda, decodifica i protocolli e calcola le misure."
+  ],
+  "features": [
+    "Acquisizione fino a 24 MS/s su 8 canali, trigger software o hardware, pre-trigger, modo continuo con registro su file",
+    "Decoder UART, SPI e I2C sovrapposti alle forme d'onda e tabellati",
+    "Analizzatore seriale RS-232/RS-485 con stima di baud e formato, decodifica Modbus RTU con CRC",
+    "Misure per canale (frequenza, periodo, duty, jitter) e ricerca di glitch",
+    "Verifica del pinout con il tester ESP32"
+  ],
+  "version": "0.1",
+  "released": "2026-11-15",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "Analizzatore logico USB compatibile fx2lafw; sigrok-cli e driver WinUSB (installabili dal programma di setup)",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoLogic-Setup-0.1.exe",
+      "platform": "Windows",
+      "sha256": ""
+    },
+    {
+      "label": "Manuale PDF",
+      "file": "Manuale_TornadoLogic.pdf",
+      "platform": "PDF",
+      "sha256": ""
+    }
+  ],
+  "screenshots": [
+    "img/01_acquisizione.png",
+    "img/02_decoder.png",
+    "img/03_misure.png",
+    "img/04_seriale_modbus.png",
+    "img/05_pinout_verifica.png",
+    "img/06_continua_log.png",
+    "img/07_tester.png"
+  ],
+  "changelog": [
+    {
+      "version": "0.1",
+      "date": "2026-11-15",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "name": "TornadoVNA",
+  "tagline": "Controllo e misura per il LibreVNA",
+  "category": "RF / Misure",
+  "order": 1,
+  "description": [
+    "Programma di controllo per l'analizzatore di reti vettoriale open-source LibreVNA, con interfaccia ispirata agli strumenti da banco.",
+    "Pilota lo strumento direttamente via USB oppure tramite LibreVNA-GUI (SCPI); in modalità demo funziona con dati sintetici e senza hardware."
+  ],
+  "features": [
+    "Misura continua o singola: start/stop, centro/span, punti, IF BW, potenza, media",
+    "Fino a 4 diagrammi e 24 formati: dB Mag, fase, SWR, ritardo, impedenza, Smith, polare",
+    "Marker con delta, ricerca di massimi/minimi e tabella marker",
+    "Analisi: banda a X dB, statistiche, maschera di return loss",
+    "Calibrazione guidata OSL, SOLT e normalizzazione",
+    "Esportazione Touchstone, CSV e immagine; monitor di stato e display ESP32"
+  ],
+  "version": "1.0.0",
+  "released": "2026-11-15",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "LibreVNA collegato via USB (driver WinUSB, installabile con Zadig); modalità demo senza hardware",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoVNA-Setup-1.0.0.exe",
+      "platform": "Windows",
+      "sha256": ""
+    },
+    {
+      "label": "Manuale PDF",
+      "file": "Manuale_TornadoVNA.pdf",
+      "platform": "PDF",
+      "sha256": ""
+    }
+  ],
+  "screenshots": [
+    "img/01_finestra.png",
+    "img/02_marker.png",
+    "img/03_analisi.png",
+    "img/04_tracce.png",
+    "img/05_calibrazione.png",
+    "img/06_stato.png"
+  ],
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-15",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ]
+}

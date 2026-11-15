@@ -1,0 +1,54 @@
+{
+  "name": "Tornado IDE ESP32",
+  "tagline": "Ambiente di sviluppo per ESP32 su PlatformIO",
+  "category": "Embedded / Digitale",
+  "order": 7,
+  "description": [
+    "Ambiente di sviluppo per schede ESP32 e Arduino che usa PlatformIO come motore di compilazione.",
+    "Riunisce in una finestra progetti, editor C/C++, compilazione e caricamento, errori cliccabili, monitor seriale, grafico dei dati, memoria, ricerca, Git e debug."
+  ],
+  "features": [
+    "Progetti PlatformIO nuovi o esistenti, con modelli pronti",
+    "Compila / Carica / Ferma / Pulisci, scelta di ambiente e porta",
+    "Errori e avvisi cliccabili, marcatori nel margine dell'editor",
+    "Monitor seriale e grafico dei valori numerici",
+    "Memoria Flash/RAM con storico e analisi dei simboli",
+    "Gestore schede e librerie che modificano platformio.ini"
+  ],
+  "version": "0.1.0",
+  "released": "2026-11-15",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "PlatformIO (installabile dal programma di setup); scheda ESP32 per il caricamento",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoESPIDE-Setup-0.1.0.exe",
+      "platform": "Windows",
+      "sha256": ""
+    },
+    {
+      "label": "Manuale PDF",
+      "file": "Manuale_TornadoESPIDE.pdf",
+      "platform": "PDF",
+      "sha256": ""
+    }
+  ],
+  "screenshots": [
+    "img/01_senza_progetto.png",
+    "img/02_progetto.png",
+    "img/03_problemi.png",
+    "img/04_compilazione.png",
+    "img/05_memoria.png"
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-15",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ]
+}

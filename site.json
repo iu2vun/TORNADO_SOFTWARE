@@ -1,0 +1,21 @@
+{
+  "title": "Tornado Laboratori",
+  "tagline": "Software e strumenti per RF, elettronica e misure",
+  "base_url": "",
+  "github_repo": "iu2vun/TORNADO_SOFTWARE",
+  "contact_email": "",
+  "callsign": "IU2VUN",
+  "location": "Varese, Italia",
+  "hero": {
+    "headline": "Strumenti software per il banco di misura",
+    "text": "Tornado Laboratori progetta e sviluppa software per RF, elettronica, avionica e strumentazione: dall'analisi di parametri S al controllo di VNA e SDR, fino ai tool di collaudo. Tutto scaricabile da qui, da qualsiasi PC."
+  },
+  "activities": [
+    {"icon": "RF", "title": "Misure RF e microonde", "text": "Software per VNA, analizzatori di spettro e generatori: calibrazione SOLT, parametri S, dominio del tempo, antenne e filtri fino a 26,5 GHz."},
+    {"icon": "SDR", "title": "SDR e demodulazione", "text": "Applicazioni per LibreSDR/ZynqSDR, RTL-SDR e HackRF: spettro, modulazioni digitali, analisi GNSS e segnali avionici."},
+    {"icon": "EMB", "title": "Embedded e firmware", "text": "Firmware ESP32, PIC e MCU, controller di rete e schede di misura autocostruite, con GUI di controllo dedicate."},
+    {"icon": "TST", "title": "Collaudo e automazione", "text": "Banchi di collaudo automatici per DUT RF, rapporti di misura con limiti pass/fail, driver SCPI/GPIB/seriale."},
+    {"icon": "AVI", "title": "Avionica", "text": "Strumentazione e analisi per ILS, VOR, MLS e transponder."},
+    {"icon": "LAB", "title": "Riparazione e sviluppo hardware", "text": "Diagnosi di apparati di misura e progettazione di hardware su misura."}
+  ]
+}
