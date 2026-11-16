@@ -33,8 +33,8 @@ class Theme:
 
 
 TRACE_COLORS_DARK = (
-    "#ff8a1f", "#35c6e8", "#a6e22e", "#f55bb4", "#ffd23f", "#5b8def",
-    "#ff5555", "#5fe3a1", "#b69cff", "#e8e8e8", "#c98a4b", "#7fd6ff",
+    "#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#8a5a00",
+    "#ffc933", "#ffefb8", "#cc8a00", "#e69500", "#fff4d6", "#996600",
 )
 TRACE_COLORS_LIGHT = (
     "#d95f00", "#0077b6", "#4d8f00", "#c2185b", "#b58900", "#3a56c8",
@@ -42,10 +42,10 @@ TRACE_COLORS_LIGHT = (
 )
 
 DARK = Theme(
-    name="dark", bg="#121417", panel="#1a1d22", panel_alt="#20242a", border="#2c313a",
-    text="#d9dce2", text_dim="#8a92a0", accent="#ff8a1f", accent_hover="#ffa043",
-    accent_press="#e07200", on_accent="#15110c", plot_bg="#0e1013", grid="#2a2f37",
-    grid_minor="#1c2026", axis="#6b7280", legend_bg="#171a1fdd", selection="#ff8a1f33",
+    name="dark", bg="#0a0600", panel="#0f0802", panel_alt="#140b02", border="#4a2f00",
+    text="#ffb000", text_dim="#b87800", accent="#ffb000", accent_hover="#ffd060",
+    accent_press="#b87800", on_accent="#0a0600", plot_bg="#050300", grid="#2e1d00",
+    grid_minor="#1a1100", axis="#b87800", legend_bg="#0f0802dd", selection="#ffb00033",
     traces=TRACE_COLORS_DARK,
 )
 

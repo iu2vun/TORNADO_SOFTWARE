@@ -371,7 +371,7 @@ class P1dBPanel(QWidget):
                 self._plot_curve(sw.power, sw.gain_db[:, k], res, f"Guadagno S{self.sij.currentText()[1:]} [dB] @ {fmt_eng(fk, 'Hz', 5)}")
                 rows = self._result_rows(res, fk)
             else:
-                pl.set_data(curves=[(sw.freq / 1e9, ip, "#ff8a1f", "IP1dB"), (sw.freq / 1e9, op, "#35c6e8", "OP1dB")],
+                pl.set_data(curves=[(sw.freq / 1e9, ip, "#ffb000", "IP1dB"), (sw.freq / 1e9, op, "#ffe08a", "OP1dB")],
                             hlines=[], vlines=[(fk / 1e9, "#8a92a0", "")], points=[],
                             xlabel="Frequenza [GHz]", ylabel="P1dB [dBm]  (arancio: ingresso, azzurro: uscita)")
                 fin = np.isfinite(ip)
@@ -398,9 +398,9 @@ class P1dBPanel(QWidget):
         if np.isfinite(res.g_ref):
             h = [(res.g_ref, "#8a92a0", "riferimento small-signal"), (res.level, "#ff5555", f"−{self.drop.value():g} dB")]
         if res.found:
-            pts = [(res.pin, res.level, "#ff8a1f", f"IP1dB {res.pin:.2f} dBm")]
-        self.plot.set_data(curves=[(np.asarray(pin)[o], np.asarray(g)[o], "#35c6e8", "G")], hlines=h,
-                           vlines=[(res.pin, "#ff8a1f", "")] if res.found else [], points=pts,
+            pts = [(res.pin, res.level, "#ffb000", f"IP1dB {res.pin:.2f} dBm")]
+        self.plot.set_data(curves=[(np.asarray(pin)[o], np.asarray(g)[o], "#ffe08a", "G")], hlines=h,
+                           vlines=[(res.pin, "#ffb000", "")] if res.found else [], points=pts,
                            xlabel="Pin [dBm]", ylabel=ylabel)
 
     def _result_rows(self, r: cp.P1dBResult, f: Optional[float] = None) -> list:
@@ -409,8 +409,8 @@ class P1dBPanel(QWidget):
             rows.append(("Frequenza", fmt_eng(f, "Hz", 6)))
         rows.append(("Guadagno small-signal", f"{r.g_ref:.3f} dB  (media primi {r.n_ref} punti)"))
         if r.found:
-            rows += [(f"IP1dB (−{self.drop.value():g} dB)", f"<b style='color:#ff8a1f'>{r.pin:.3f} dBm</b>"),
-                     ("OP1dB", f"<b style='color:#ff8a1f'>{r.pout:.3f} dBm</b>")]
+            rows += [(f"IP1dB (−{self.drop.value():g} dB)", f"<b style='color:#ffd060'>{r.pin:.3f} dBm</b>"),
+                     ("OP1dB", f"<b style='color:#ffd060'>{r.pout:.3f} dBm</b>")]
         else:
             rows.append(("P1dB", f"non determinato — {r.note}"))
         return rows

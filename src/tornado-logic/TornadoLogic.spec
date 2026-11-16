@@ -8,7 +8,7 @@ ONEFILE = os.environ.get("APP_ONEFILE") == "1"
 NAME = "TornadoLogic"
 ICON = "assets/TornadoLogic.ico"
 ENTRY = "main.py"
-DATA_DIRS = []          # cartelle di risorse copiate con l'eseguibile
+DATA_DIRS = ["assets"]          # cartelle di risorse copiate con l'eseguibile
 LOCAL_PACKAGES = ['logic_core', 'logic_gui', 'tornado_ui']    # pacchetti del progetto: include anche gli import dinamici
 COLLECT_ALL = ["pyqtgraph", "serial"]    # serial = pyserial (porta del tester ESP32, import in funzione)
 EXCLUDES = ['PySide2', 'PyQt5', 'PyQt6', 'tkinter', 'IPython', 'notebook', 'pytest']

@@ -65,7 +65,7 @@ def _fmt(color: str, bold: bool = False, italic: bool = False) -> QTextCharForma
     return f
 
 
-C_KW_COL, C_BI, C_STR, C_COM, C_NUM, C_DEC, C_TAG, C_ATTR = "#ff8a1f", "#35c6e8", "#a6e22e", "#6b7280", "#b69cff", "#f55bb4", "#ff8a1f", "#35c6e8"
+C_KW_COL, C_BI, C_STR, C_COM, C_NUM, C_DEC, C_TAG, C_ATTR = "#ffd060", "#ff9a00", "#ffe08a", "#8a5a00", "#ffc933", "#cc8a00", "#ffd060", "#ff9a00"
 
 
 class Highlighter(QSyntaxHighlighter):

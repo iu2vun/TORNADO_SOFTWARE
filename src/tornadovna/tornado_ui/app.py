@@ -45,6 +45,8 @@ def run_app(window_factory: Callable[[], "QWidget"], name: str, version: str = "
     apply_theme(app)
 
     win = window_factory()
+    from .theme import install_crt
+    install_crt((win.centralWidget() if hasattr(win, "centralWidget") else None) or win)
     if not win.windowTitle():
         win.setWindowTitle(name)
     QShortcut(QKeySequence("F11"), win, lambda: win.showNormal() if win.isFullScreen() else win.showFullScreen())

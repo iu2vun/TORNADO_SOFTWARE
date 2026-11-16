@@ -149,6 +149,8 @@ def run(tool_id: str, argv: Optional[list[str]] = None) -> int:
         windows = []
         for grp in groups:
             win = make_window(spec, spec.factory())
+            from .core.theme import install_crt
+            install_crt(win.centralWidget() or win)
             win.showMaximized()
             for p in grp:
                 win.open_path(p)

@@ -8,7 +8,7 @@ ONEFILE = os.environ.get("APP_ONEFILE") == "1"
 NAME = "TornadoVNA"
 ICON = "assets/TornadoVNA.ico"
 ENTRY = "main.py"
-DATA_DIRS = []          # cartelle di risorse copiate con l'eseguibile
+DATA_DIRS = ["assets"]          # cartelle di risorse copiate con l'eseguibile
 LOCAL_PACKAGES = ["benchvna", "tornado_ui"]    # pacchetti del progetto: include anche gli import dinamici
 COLLECT_ALL = ['pyqtgraph']      # librerie con dati/plugin/DLL che l'analisi automatica non vede
 EXCLUDES = ['PySide2', 'PyQt5', 'PyQt6', 'tkinter', 'IPython', 'notebook', 'pytest']

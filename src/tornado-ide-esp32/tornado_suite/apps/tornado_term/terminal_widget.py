@@ -128,7 +128,7 @@ class TerminalWidget(QAbstractScrollArea):
 
         self._font = QFont()
         self._set_font_family()
-        self._font_pt = 10
+        self._font_pt = 14
         self._apply_font()
 
         self._new_screen(cols, rows)
@@ -190,7 +190,7 @@ class TerminalWidget(QAbstractScrollArea):
 
     # --- font --------------------------------------------------------------
     def _set_font_family(self):
-        self._font.setFamilies(["Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Courier New"])
+        self._font.setFamilies(["VT323", "Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Courier New"])
         self._font.setStyleHint(QFont.StyleHint.Monospace)
         self._font.setKerning(False)
         self._font.setHintingPreference(QFont.HintingPreference.PreferFullHinting)

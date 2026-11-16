@@ -26,7 +26,7 @@
       "label": "Installer Windows",
       "file": "TornadoESPIDE-Setup-0.2.exe",
       "platform": "Windows",
-      "sha256": "9b96931844b42efc3020e6497b774c440813817529e995f17d85698b429d4d82"
+      "sha256": "54c42d440d0046236b1351d16b17833455c3d2733e3f2e49b7c9d86dd6fd2eb5"
     },
     {
       "label": "Manuale PDF",
@@ -38,7 +38,7 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornado-ide-esp32-sorgenti-0.2.zip",
       "platform": "Python",
-      "sha256": "f4c965187567495a81a322ea929e7d0d905bf73d2a7822777ef6c79a1e0e7ec2"
+      "sha256": "78a97a4083fe4be5d01cf85c9c34e91e12d24d5461cc1af9b0b4e8749a8f1246"
     }
   ],
   "screenshots": [

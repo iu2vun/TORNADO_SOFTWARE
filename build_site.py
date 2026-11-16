@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 import hashlib
-CSS_V = hashlib.md5((ROOT / "assets" / "style.css").read_bytes()).hexdigest()[:8]
+CSS_V = hashlib.md5((ROOT / "assets" / "style.css").read_bytes() + (ROOT / "assets" / "crt.js").read_bytes()).hexdigest()[:8]
 E = html.escape
 
 
@@ -21,15 +21,15 @@ def load_json(p: Path):
 def placeholder_svg(name: str, cat: str) -> str:
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">'
-        '<rect width="800" height="500" fill="#000"/>'
-        '<g stroke="#26262a" stroke-width="1">'
+        '<rect width="800" height="500" fill="#050300"/>'
+        '<g stroke="#2e1d00" stroke-width="1">'
         + "".join(f'<line x1="{x}" y1="0" x2="{x}" y2="500"/>' for x in range(0, 801, 50))
         + "".join(f'<line x1="0" y1="{y}" x2="800" y2="{y}"/>' for y in range(0, 501, 50))
         + "</g>"
         '<path d="M0 330 C100 330 120 140 220 140 S340 380 440 380 S560 190 660 190 S760 300 800 300" '
-        'fill="none" stroke="#ff8a1f" stroke-width="3"/>'
-        f'<text x="40" y="450" fill="#ececec" font-family="Segoe UI,sans-serif" font-size="38" font-weight="700">{E(name)}</text>'
-        f'<text x="40" y="480" fill="#9a9aa2" font-family="Segoe UI,sans-serif" font-size="18">{E(cat)}</text>'
+        'fill="none" stroke="#ffb000" stroke-width="3"/>'
+        f'<text x="40" y="450" fill="#ffe08a" font-family="VT323,monospace" font-size="48">{E(name)}</text>'
+        f'<text x="40" y="480" fill="#b87800" font-family="VT323,monospace" font-size="26">{E(cat)}</text>'
         "</svg>"
     )
 
@@ -43,7 +43,7 @@ def dl_url(repo: str, sw: dict, d: dict) -> str:
     return f"https://github.com/{repo}/releases/download/{tag}/{d['file']}"
 
 
-def page(site: dict, title: str, body: str, depth: int, desc: str = "") -> str:
+def page(site: dict, title: str, body: str, depth: int, desc: str = "", status_tip: str = "") -> str:
     rel = "../" * depth
     full = f"{title} — {site['title']}" if title else site["title"]
     return f"""<!doctype html>
@@ -51,17 +51,28 @@ def page(site: dict, title: str, body: str, depth: int, desc: str = "") -> str:
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(full)}</title>
 <meta name="description" content="{E(desc or site['tagline'])}">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0a0908">
 <link rel="icon" type="image/png" href="{rel}assets/icon_fulmine.png">
+<link rel="preload" href="{rel}assets/fonts/VT323-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="{rel}assets/style.css?v={CSS_V}">
 </head><body>
-<header class="top"><div class="wrap">
-<a class="brand" href="{rel}index.html"><img src="{rel}assets/scritta.png" alt="Tornado Laboratori"></a>
-<nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#chisono">Chi sono</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav>
-</div></header>
+<div id="room"><div id="monitor"><div id="bezel"><div id="tube">
+<div id="screen">
+<header class="top"><a class="brand" href="{rel}index.html">{E(site['title'])}</a>
+<nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#chisono">Chi sono</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav></header>
 {body}
 <footer><div class="wrap"><span>© {E(site['title'])} — {E(site.get('location',''))}</span>
 <span>{E(site.get('callsign',''))}</span></div></footer>
+<div id="status"><span id="stmsg" data-def="&gt; SELEZIONA UN PROGRAMMA">&gt; SELEZIONA UN PROGRAMMA</span><span>{E(site.get('callsign',''))} · {E(site.get('location','').upper())}</span></div>
+</div>
+<div id="crt"></div><div id="vig"></div><div id="glare"></div>
+</div></div>
+<div id="panel"><div class="ctl">
+<div class="kn"><button type="button" data-k="lum" role="slider" aria-label="Luminosità" aria-valuemin="0" aria-valuemax="100"><i></i></button><span>LUM <b>60</b></span></div>
+<div class="kn"><button type="button" data-k="con" role="slider" aria-label="Contrasto" aria-valuemin="0" aria-valuemax="100"><i></i></button><span>CONTR <b>60</b></span></div>
+<div class="kn"><button type="button" data-k="foc" role="slider" aria-label="Focus" aria-valuemin="0" aria-valuemax="100"><i></i></button><span>FOCUS <b>80</b></span></div>
+<button type="button" id="reset">RESET</button><div class="led"></div></div></div>
+</div></div>
 <div id="lb"><img alt=""></div>
 <script>
 const lb=document.getElementById('lb'),li=lb.querySelector('img');
@@ -72,6 +83,7 @@ const fb=document.querySelectorAll('.filters button');
 fb.forEach(b=>b.onclick=()=>{{fb.forEach(x=>x.classList.remove('on'));b.classList.add('on');
 document.querySelectorAll('.sw').forEach(c=>c.style.display=(b.dataset.c==='*'||c.dataset.c===b.dataset.c)?'':'none')}});
 </script>
+<script src="{rel}assets/crt.js?v={CSS_V}" defer></script>
 </body></html>"""
 
 
@@ -85,6 +97,8 @@ def build(out: Path):
     for extra in (ROOT / "assets").glob("*"):
         if extra.name != "style.css" and extra.is_file():
             shutil.copy(extra, out / "assets" / extra.name)
+        elif extra.is_dir():
+            shutil.copytree(extra, out / "assets" / extra.name)
 
     sws = []
     for d in sorted((ROOT / "catalog").iterdir()):
@@ -146,13 +160,18 @@ def build(out: Path):
     else:
         contact = (f'<a class="btn" href="https://github.com/{E(repo)}/issues">Scrivi su GitHub (Issues)</a>'
                    f' <a class="btn off" href="https://github.com/{E(repo.split("/")[0])}">Profilo GitHub</a>')
+    rows = "".join(
+        f'<a class="row" href="software/{x["slug"]}/index.html" data-tip="{E(x.get("tagline", ""))}">'
+        f'<span>{E(x["name"])}</span><span>{E(x.get("version") or "—")}</span><span>[ SCARICA ]</span></a>'
+        for x in sws)
     body = f"""
-<div class="hero"><div class="wrap">
-<div class="splash"><img class="bolt" src="assets/fulmine.png" alt="Tornado Laboratori">
-<div class="line">{E(site['tagline'])} &nbsp;·&nbsp; {E(site.get('callsign',''))} &nbsp;·&nbsp; {E(site.get('location',''))}</div></div>
-<h1>{E(h['headline'])}</h1><p>{E(h['text'])}</p>
-<a class="btn" href="#software">Scarica i software</a> <a class="btn ghost" href="#laboratorio">Il laboratorio</a>
-</div></div>
+<div class="hero"><div>
+<img class="bolt" src="assets/fulmine.png" alt="Tornado Laboratori">
+<div class="l1 type">&gt; BENVENUTO NEL LABORATORIO</div>
+<h1 class="type">{E(h['headline'])}</h1><p class="type">{E(h['text'])}</p>
+</div>
+<div class="dir"><div class="th"><span>DIRECTORY / SOFTWARE</span><span>VERSIONE</span><span>DOWNLOAD</span></div>{rows}</div>
+</div>
 <section id="laboratorio"><div class="wrap"><h2>Il laboratorio</h2>
 <p class="sub">Attività di {E(site['title'])}.</p><div class="grid">{acts}</div></div></section>
 {about}

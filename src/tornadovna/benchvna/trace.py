@@ -19,7 +19,7 @@ _PALETTE = ["#ffd23f", "#5b8def", "#ff5555", "#5fe3a1", "#b69cff", "#e8e8e8", "#
 _color_cycle = itertools.cycle(_PALETTE)
 
 _trace_counter = itertools.count(1)
-_TRACE_SEQ = ["#ff8a1f", "#35c6e8", "#a6e22e", "#f55bb4", "#ffd23f", "#5b8def", "#ff5555", "#5fe3a1"]
+_TRACE_SEQ = ["#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#8a5a00", "#ffc933", "#ffefb8"]
 
 
 # scala predefinita per formato: (ref, div, divisioni sopra ref, divisioni sotto ref)

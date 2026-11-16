@@ -1,42 +1,47 @@
-"""Tema nero/arancione della suite: palette unica + foglio di stile QSS globale.
+"""Tema Sodium Vapor della suite: monitor ambra monocromatico (stile HP 8563 / IFR COM120).
 
-La palette deriva da SParView (#121417 / #ff8a1f). Tutti i moduli attingono da
-qui (``P``) invece di hardcodare colori.
+Palette unica + foglio di stile QSS globale + font VT323 incorporato + overlay
+scanline/vignettatura (``install_crt``). Tutti i moduli attingono da qui (``P``)
+invece di hardcodare colori. Backup del tema precedente: theme.py.bak_pre_sodium.
 """
 from __future__ import annotations
 
 import os
+import re
+import sys
 import tempfile
 from dataclasses import dataclass
 
-from PySide6.QtCore import QPointF, Qt
-from PySide6.QtGui import QColor, QFont, QPainter, QPalette, QPen, QPixmap, QPolygonF
-from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QEvent, QObject, QPointF, Qt
+from PySide6.QtGui import (QColor, QFont, QFontDatabase, QPainter, QPalette, QPen, QPixmap, QPolygonF,
+                           QRadialGradient)
+from PySide6.QtWidgets import QApplication, QWidget
 
 
 @dataclass(frozen=True)
 class Palette:
-    bg: str = "#121417"          # fondo applicazione
-    panel: str = "#1a1d22"       # pannelli
-    panel_alt: str = "#20242a"   # righe alternate / ribbon
-    raised: str = "#262b32"      # controlli in rilievo
-    border: str = "#2c313a"
-    text: str = "#d9dce2"
-    text_dim: str = "#8a92a0"
-    accent: str = "#ff8a1f"
-    accent_hover: str = "#ffa043"
-    accent_press: str = "#e07200"
-    on_accent: str = "#15110c"
-    selection: str = "rgba(255,138,31,50)"
-    danger: str = "#ff5555"
-    ok: str = "#5fe3a1"
+    bg: str = "#0a0600"          # fondo applicazione (nero fosforo)
+    panel: str = "#0f0802"       # pannelli
+    panel_alt: str = "#140b02"   # righe alternate / ribbon
+    raised: str = "#1b1004"      # controlli in rilievo
+    border: str = "#4a2f00"
+    text: str = "#ffb000"        # fosforo ambra
+    text_dim: str = "#b87800"    # etichette
+    accent: str = "#ffb000"      # accento = fosforo pieno (video inverso)
+    accent_hover: str = "#ffd060"
+    accent_press: str = "#b87800"
+    on_accent: str = "#0a0600"
+    selection: str = "rgba(255,176,0,60)"
+    peak: str = "#ffd060"        # picchi: titoli, valori, marker
+    danger: str = "#ffd060"      # monocromatico: l'errore si legge dal testo (ERR, !)
+    ok: str = "#ffb000"
     page: str = "#ffffff"        # foglio documento (Word/PDF)
     page_text: str = "#1b1b1b"
-    canvas: str = "#0e1013"      # fondo area di lavoro (dietro ai fogli)
+    canvas: str = "#050300"      # fondo area di lavoro (dietro ai fogli)
 
 
 P = Palette()
-FONT_FAMILY = '"Bahnschrift", "Segoe UI", "Inter", "Cantarell", "Noto Sans", sans-serif'
+FONT_FAMILY = '"VT323", "Courier New", "Consolas", monospace'
 MONO_FAMILY = '"Cascadia Mono", "Consolas", "JetBrains Mono", "DejaVu Sans Mono", monospace'
 
 
@@ -111,9 +116,9 @@ def _font_family() -> str:
 def _font_px() -> int:
     try:
         from .settings import settings
-        return int(settings().value("ui/font_px", 13))
+        return int(settings().value("ui/font_px", 19))
     except Exception:  # noqa: BLE001
-        return 13
+        return 19
 
 
 def _cset(k: str, d):
@@ -127,20 +132,30 @@ def _cset(k: str, d):
 
 def _clock_family() -> str:
     f = str(_cset("ui/clock_font", ""))
-    return (f'"{f}", ' if f else "") + '"Bahnschrift", "Consolas", "JetBrains Mono", "DejaVu Sans Mono", monospace'
+    return (f'"{f}", ' if f else "") + '"VT323", "Courier New", monospace'
 
 
 def _clock_px() -> int:
-    return int(_cset("ui/clock_px", 68))
+    return int(_cset("ui/clock_px", 96))
 
 
 def _clock_weight() -> int:
-    return int(_cset("ui/clock_weight", 600))
+    return int(_cset("ui/clock_weight", 400))
+
+
+def _square(qss: str) -> str:
+    """Strumento da banco: spigoli vivi (esclusi radio e maniglie dello slider, che restano tondi)."""
+    out = []
+    for ln in qss.split("\n"):
+        if "QRadioButton::indicator" not in ln and "QSlider::handle" not in ln:
+            ln = re.sub(r"border-(top-left-|top-right-|bottom-left-|bottom-right-)?radius:\s*\d+px", lambda m: m.group(0).split(":")[0] + ": 0", ln)
+        out.append(ln)
+    return "\n".join(out)
 
 
 def build_qss() -> str:
     ic = _make_indicators()
-    return f"""
+    return _square(f"""
 * {{ outline: 0; }}
 QWidget {{
     background: {P.bg}; color: {P.text};
@@ -172,7 +187,7 @@ QPushButton {{ background: {P.raised}; border: 1px solid {P.border}; border-radi
 QPushButton:hover {{ border-color: {P.accent}; }}
 QPushButton:pressed {{ background: {P.accent_press}; color: {P.on_accent}; }}
 QPushButton:disabled {{ color: {P.text_dim}; background: {P.panel}; }}
-QPushButton[primary="true"] {{ background: {P.accent}; color: {P.on_accent}; border-color: {P.accent}; font-weight: 600; }}
+QPushButton[primary="true"] {{ background: {P.accent}; color: {P.on_accent}; border-color: {P.accent}; font-weight: 400; }}
 QPushButton[primary="true"]:hover {{ background: {P.accent_hover}; }}
 QPushButton[flat="true"] {{ background: transparent; border-color: transparent; }}
 QPushButton[flat="true"]:hover {{ background: {P.raised}; }}
@@ -197,7 +212,7 @@ QCheckBox::indicator:checked {{ background: {P.accent}; border-color: {P.accent}
 QRadioButton::indicator {{ width: 14px; height: 14px; border: 1px solid {P.text_dim}; border-radius: 8px; background: {P.panel}; }}
 QRadioButton::indicator:checked {{ background: {P.accent}; border-color: {P.accent}; }}
 QGroupBox {{ border: 1px solid {P.border}; border-radius: 6px; margin-top: 12px; padding-top: 8px; }}
-QGroupBox::title {{ subcontrol-origin: margin; left: 10px; padding: 0 5px; color: {P.accent}; }}
+QGroupBox::title {{ subcontrol-origin: margin; left: 10px; padding: 0 5px; color: {P.peak}; }}
 
 /* --- slider / progress --- */
 QSlider::groove:horizontal {{ height: 3px; background: {P.border}; border-radius: 1px; }}
@@ -251,11 +266,11 @@ QFrame[frameShape="4"], QFrame[frameShape="5"] {{ color: {P.border}; }}
 QFrame#Card {{ background: {P.panel}; border: 1px solid {P.border}; border-radius: 10px; }}
 QFrame#Card:hover {{ border-color: {P.accent}; }}
 QFrame#Panel {{ background: {P.panel}; border: 1px solid {P.border}; border-radius: 10px; }}
-QLabel#H1 {{ font-size: 22px; font-weight: 600; }}
-QLabel#H2 {{ font-size: 15px; font-weight: 600; color: {P.accent}; }}
+QLabel#H1 {{ font-size: 32px; font-weight: 400; color: {P.peak}; }}
+QLabel#H2 {{ font-size: 22px; font-weight: 400; color: {P.peak}; letter-spacing: 1px; }}
 QLabel#Dim {{ color: {P.text_dim}; }}
 QLabel#Clock {{ font-family: {_clock_family()}; font-size: {_clock_px()}px; font-weight: {_clock_weight()}; color: {P.text}; }}
-QLabel#ClockSec {{ font-size: 22px; color: {P.accent}; }}
+QLabel#ClockSec {{ font-size: 30px; color: {P.accent}; }}
 QWidget#TopBar {{ background: {P.panel}; border-bottom: 1px solid {P.border}; }}
 QWidget#Rail {{ background: {P.panel}; border-left: 1px solid {P.border}; }}
 QToolButton#RailBtn {{ border-radius: 8px; padding: 8px; }}
@@ -265,12 +280,85 @@ QTabBar#RibbonTabs {{ background: {P.panel_alt}; }}
 QTabBar#RibbonTabs::tab {{ padding: 6px 12px; color: {P.text}; }}
 QTabBar#RibbonTabs::tab:selected {{ color: {P.accent}; border-bottom: 2px solid {P.accent}; }}
 QFrame#RibbonGroup {{ background: transparent; border: none; border-right: 1px solid {P.border}; }}
-QLabel#RibbonGroupTitle {{ color: {P.text_dim}; font-size: 11px; }}
+QLabel#RibbonGroupTitle {{ color: {P.text_dim}; font-size: 16px; }}
 QToolButton#RibbonBtn {{ padding: 3px 5px; border-radius: 4px; }}
-"""
+""")
+
+
+def _assets_dir() -> str:
+    """Cartella assets: nell'exe PyInstaller sta in _MEIPASS, da sorgenti si risale fino a trovare assets/fonts."""
+    base = getattr(sys, "_MEIPASS", None)
+    if base:
+        return os.path.join(base, "assets")
+    d = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(5):
+        if os.path.isdir(os.path.join(d, "assets", "fonts")):
+            return os.path.join(d, "assets")
+        d = os.path.dirname(d)
+    return os.path.join(d, "assets")
+
+
+def load_fonts() -> bool:
+    """Registra i font incorporati (assets/fonts/*.ttf). Mai scaricati dal web."""
+    d = os.path.join(_assets_dir(), "fonts")
+    ok = False
+    if os.path.isdir(d):
+        for f in sorted(os.listdir(d)):
+            if f.lower().endswith((".ttf", ".otf")):
+                ok |= QFontDatabase.addApplicationFont(os.path.join(d, f)) >= 0
+    return ok
+
+
+class CrtOverlay(QWidget):
+    """Scanline (riga scura ogni 3 px) + vignettatura sopra la finestra. Trasparente al mouse."""
+
+    def __init__(self, parent: QWidget) -> None:
+        super().__init__(parent)
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+        tile = QPixmap(1, 3)
+        tile.fill(Qt.GlobalColor.transparent)
+        p = QPainter(tile)
+        p.fillRect(0, 2, 1, 1, QColor(0, 0, 0, 72))
+        p.end()
+        self._tile = tile
+
+    def paintEvent(self, _e) -> None:  # noqa: N802
+        p = QPainter(self)
+        p.drawTiledPixmap(self.rect(), self._tile)
+        g = QRadialGradient(self.rect().center(), max(self.width(), self.height()) * 0.75)
+        g.setColorAt(0.0, QColor(0, 0, 0, 0))
+        g.setColorAt(0.7, QColor(0, 0, 0, 0))
+        g.setColorAt(1.0, QColor(0, 0, 0, 150))
+        p.fillRect(self.rect(), g)
+        p.end()
+
+
+class _CrtFilter(QObject):
+    def __init__(self, host: QWidget, ov: CrtOverlay) -> None:
+        super().__init__(host)
+        self.host, self.ov = host, ov
+
+    def eventFilter(self, obj, ev) -> bool:  # noqa: N802
+        if obj is self.host and ev.type() in (QEvent.Type.Resize, QEvent.Type.Show, QEvent.Type.ChildAdded,
+                                              QEvent.Type.LayoutRequest):
+            self.ov.setGeometry(self.host.rect())
+            self.ov.raise_()
+        return False
+
+
+def install_crt(host: QWidget) -> CrtOverlay:
+    """Applica scanline e vignettatura a una finestra/widget (sempre attive: fa parte del tema)."""
+    ov = CrtOverlay(host)
+    ov.setGeometry(host.rect())
+    host.installEventFilter(_CrtFilter(host, ov))
+    ov.raise_()
+    ov.show()
+    return ov
 
 
 def apply_theme(app: QApplication) -> None:
+    load_fonts()
     app.setStyle("Fusion")
     pal = QPalette()
     roles = {
@@ -280,12 +368,13 @@ def apply_theme(app: QApplication) -> None:
         QPalette.ColorRole.ButtonText: P.text, QPalette.ColorRole.Highlight: P.accent,
         QPalette.ColorRole.HighlightedText: P.on_accent, QPalette.ColorRole.ToolTipBase: P.raised,
         QPalette.ColorRole.ToolTipText: P.text, QPalette.ColorRole.PlaceholderText: P.text_dim,
-        QPalette.ColorRole.Link: P.accent, QPalette.ColorRole.BrightText: "#ffffff",
+        QPalette.ColorRole.Link: P.accent, QPalette.ColorRole.BrightText: P.peak,
     }
     for role, col in roles.items():
         pal.setColor(role, QColor(col))
     app.setPalette(pal)
-    f = QFont("Bahnschrift", 10)
+    f = QFont("VT323")
+    f.setPixelSize(19)
     f.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
     app.setFont(f)
     app.setStyleSheet(build_qss())

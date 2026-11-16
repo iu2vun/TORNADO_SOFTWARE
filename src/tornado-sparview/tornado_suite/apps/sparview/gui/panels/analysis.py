@@ -166,7 +166,7 @@ class AnalysisPanel(QWidget):
         return e.net, key, kind, f[m], y[m]
 
     def _html(self, title: str, rows: list[tuple[str, str]]) -> None:
-        h = f"<b style='color:#ff8a1f'>{title}</b><br>"
+        h = f"<b style='color:#ffd060'>{title}</b><br>"
         h += "<table cellspacing=2>" + "".join(
             f"<tr><td style='color:#8a92a0'>{a}</td><td>&nbsp;{b}</td></tr>" for a, b in rows) + "</table>"
         self.out.setHtml(h)

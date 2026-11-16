@@ -223,8 +223,8 @@ class InfoPanel(QWidget):
             pass
         if n.noise is not None:
             rows.append(row("Rumore", "dati presenti"))
-        h = "<h3 style='color:#ff8a1f'>%s</h3><table>%s</table>" % (html.escape(n.name), "".join(rows))
+        h = "<h3 style='color:#ffd060'>%s</h3><table>%s</table>" % (html.escape(n.name), "".join(rows))
         if n.comments:
-            h += "<h4 style='color:#ff8a1f'>Commenti</h4><pre style='font-size:11px'>%s</pre>" % html.escape(
+            h += "<h4 style='color:#ffd060'>Commenti</h4><pre style='font-size:11px'>%s</pre>" % html.escape(
                 "\n".join(n.comments[:80]))
         self.view.setHtml(h)

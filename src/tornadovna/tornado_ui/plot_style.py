@@ -4,23 +4,25 @@
 """
 from __future__ import annotations
 
+import os
+
 from .theme import P
 
 # Colori delle tracce, in ordine d'uso: la prima è sempre l'accento della suite.
 TRACE_COLORS = (
-    "#ff8a1f", "#35c6e8", "#a6e22e", "#f55bb4", "#ffd23f", "#5b8def",
-    "#ff5555", "#5fe3a1", "#b69cff", "#e8e8e8", "#c98a4b", "#7fd6ff",
+    "#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#8a5a00",
+    "#ffc933", "#ffefb8", "#cc8a00", "#e69500", "#fff4d6", "#996600",
 )
 
 PLOT = {
     "bg": P.canvas,          # fondo area di tracciamento
     "figure_bg": P.panel,    # fondo attorno al grafico
-    "grid": "#2a2f37",
-    "grid_minor": "#1c2026",
-    "axis": "#6b7280",
+    "grid": "#2e1d00",
+    "grid_minor": "#1a1100",
+    "axis": "#b87800",
     "text": P.text,
     "text_dim": P.text_dim,
-    "legend_bg": "#171a1fdd",
+    "legend_bg": "#0f0802dd",
 }
 
 
@@ -28,6 +30,14 @@ def apply_matplotlib_style() -> None:
     """Imposta rcParams di matplotlib sul tema scuro/arancione."""
     import matplotlib as mpl
     from cycler import cycler
+    try:
+        import glob
+        from matplotlib import font_manager
+        from .theme import _assets_dir
+        for f in glob.glob(os.path.join(_assets_dir(), "fonts", "*.ttf")):
+            font_manager.fontManager.addfont(f)
+    except Exception:  # noqa: BLE001
+        pass
 
     mpl.rcParams.update({
         "figure.facecolor": PLOT["figure_bg"], "axes.facecolor": PLOT["bg"],
@@ -37,7 +47,7 @@ def apply_matplotlib_style() -> None:
         "xtick.color": PLOT["text_dim"], "ytick.color": PLOT["text_dim"],
         "text.color": PLOT["text"], "legend.facecolor": PLOT["figure_bg"],
         "legend.edgecolor": PLOT["grid"], "savefig.facecolor": PLOT["figure_bg"],
-        "font.family": ["Bahnschrift", "Segoe UI", "DejaVu Sans"],
+        "font.family": ["VT323", "DejaVu Sans"], "font.size": 14,
     })
 
 

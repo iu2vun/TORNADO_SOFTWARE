@@ -5,8 +5,8 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QFont, QFontDatabase, QPalette
 from PySide6.QtWidgets import QApplication
 
-CHANNEL_COLORS = ["#4e9af1", "#f1a14e", "#6bd18b", "#e86a92", "#b48ae8", "#4ed1d1", "#d1c44e", "#e8776a"]
-_MONO_FAMILIES = ("Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Menlo", "Liberation Mono")
+CHANNEL_COLORS = ["#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#cc8a00", "#ffc933", "#fff4d6"]
+_MONO_FAMILIES = ("VT323", "Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Menlo", "Liberation Mono")
 
 
 def mono_font(point_size: int = 0) -> QFont:
@@ -20,6 +20,8 @@ def mono_font(point_size: int = 0) -> QFont:
     f.setStyleHint(QFont.StyleHint.Monospace)
     if point_size:
         f.setPointSize(point_size)
+    elif f.family() == "VT323":
+        f.setPixelSize(19)
     return f
 
 
@@ -30,10 +32,10 @@ def is_dark(pal: QPalette) -> bool:
 def colors_for(pal: QPalette) -> dict[str, QColor]:
     dark = is_dark(pal)
     return {
-        "rx": QColor("#66d17a") if dark else QColor("#1b7a2f"),
-        "tx": QColor("#6db3ff") if dark else QColor("#0b57b8"),
-        "event": QColor("#9aa0a6") if dark else QColor("#6b7075"),
-        "warn": QColor("#ffb454") if dark else QColor("#b45f00"),
+        "rx": QColor("#ffb000") if dark else QColor("#1b7a2f"),
+        "tx": QColor("#ffe08a") if dark else QColor("#0b57b8"),
+        "event": QColor("#b87800") if dark else QColor("#6b7075"),
+        "warn": QColor("#ffd060") if dark else QColor("#b45f00"),
         "grid": QColor(255, 255, 255, 40) if dark else QColor(0, 0, 0, 40),
         "lane": QColor(255, 255, 255, 10) if dark else QColor(0, 0, 0, 10),
         "text": pal.color(QPalette.ColorRole.Text),

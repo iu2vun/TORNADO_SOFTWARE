@@ -25,7 +25,7 @@
       "label": "Installer Windows",
       "file": "TornadoLogic-Setup-0.1.exe",
       "platform": "Windows",
-      "sha256": "bac21aa7dc17afef68ef92b77c123669a34407068a1ed2f922ac7a32f42e1333"
+      "sha256": "9c28234def93f28cbbc566ce36edd47860e0438c3bdbdebb174a9f0da5e2a80d"
     },
     {
       "label": "Manuale PDF",
@@ -37,7 +37,7 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornado-logic-sorgenti-0.1.zip",
       "platform": "Python",
-      "sha256": "c080ca1542db175557cb5a3980a164132e06bd4e3b2ed925856cb9ff3a05c7eb"
+      "sha256": "80bc23caae627d0f8d30c29f8a1b4651d76b3bdf768530e004738ce65353d7cd"
     }
   ],
   "screenshots": [

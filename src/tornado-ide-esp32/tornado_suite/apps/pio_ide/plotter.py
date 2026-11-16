@@ -21,7 +21,7 @@ _ANSI = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]")
 _NUM = r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?"
 _KV = re.compile(rf"([A-Za-z_][\w.\-]*)\s*[:=]\s*({_NUM})(?![\w.])")
 _NUM_ONLY = re.compile(rf"^{_NUM}$")
-COLORS = ("#ff8a1f", "#5aa9ff", "#5fe3a1", "#d58bff", "#f2c94c", "#4fd1d9", "#ff5555", "#d9dce2")
+COLORS = ("#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#8a5a00", "#ffc933", "#fff4d6")
 
 
 def parse_values(line: str) -> list[tuple[str, float]]:

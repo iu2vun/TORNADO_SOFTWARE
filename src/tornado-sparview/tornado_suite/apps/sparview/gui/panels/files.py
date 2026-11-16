@@ -122,7 +122,7 @@ class MatrixSelector(QWidget):
             b.blockSignals(True)
             b.setChecked(on)
             b.blockSignals(False)
-            col = e.colors.get((i, j), "#ff8a1f")
+            col = e.colors.get((i, j), "#ffb000")
             b.setStyleSheet(f"QToolButton:checked {{ background: {col}; border-color: {col}; color: #101010; }}")
         net = e.net
         self.hint.setText(f"{net.nports} porte · {len(e.cells)} tracce selezionate")
@@ -131,7 +131,7 @@ class MatrixSelector(QWidget):
         e = self.ws.entry(self.uid)
         if not e:
             return
-        c = QColorDialog.getColor(QColor(e.colors.get((i, j), "#ff8a1f")), self, "Colore traccia")
+        c = QColorDialog.getColor(QColor(e.colors.get((i, j), "#ffb000")), self, "Colore traccia")
         if c.isValid():
             self.ws.set_color(self.uid, i, j, c.name())
 

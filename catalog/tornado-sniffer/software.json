@@ -24,7 +24,7 @@
       "label": "Installer Windows",
       "file": "TornadoSniffer-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": "747c89d6655277476d438c7b35fca481930e662cce5a91c2797ab04df754052c"
+      "sha256": "48f61f04332152dafb063daf7579a3528dbc9b3ca04b5ecfe05c249a333daf79"
     },
     {
       "label": "Manuale PDF",
@@ -36,7 +36,7 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornado-sniffer-sorgenti-0.1.0.zip",
       "platform": "Python",
-      "sha256": "dd6a0b733160a905d30915511f4f80371c7816b322e48551fe33af82f317cbf1"
+      "sha256": "70db76b507ebdbea40f0e58d591f0aa8756b81088f4c2f3aeb3458f38b3e2b66"
     }
   ],
   "screenshots": [
