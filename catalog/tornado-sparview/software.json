@@ -38,16 +38,11 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornado-sparview-sorgenti-0.1.0.zip",
       "platform": "Python",
-      "sha256": "ae13119fcbdf4e0e1d2a731ea6bd8bf06eaca1b447415db7d7c962691ef61858"
+      "sha256": "128f7c3ccbd14ede3987a17f2ffa50929e3f52efef2e9656101f17d49dac7324"
     }
   ],
   "screenshots": [
-    "img/01_finestra.png",
-    "img/02_analisi.png",
-    "img/03_trasforma.png",
-    "img/04_tempo.png",
-    "img/05_math.png",
-    "img/06_p1db.png"
+    "img/01_sparview.png"
   ],
   "changelog": [
     {

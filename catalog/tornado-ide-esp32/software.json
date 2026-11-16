@@ -1,32 +1,35 @@
 {
   "name": "Tornado IDE ESP32",
-  "tagline": "Ambiente di sviluppo per ESP32 su PlatformIO",
-  "category": "Embedded / Digitale",
+  "tagline": "IDE per ESP32, RP2040, STM32 e Arduino con motore PlatformIO, debugger, grafico seriale e programmatore integrato",
+  "category": "Sviluppo",
   "order": 7,
   "description": [
-    "Ambiente di sviluppo per schede ESP32 e Arduino che usa PlatformIO come motore di compilazione.",
-    "Riunisce in una finestra progetti, editor C/C++, compilazione e caricamento, errori cliccabili, monitor seriale, grafico dei dati, memoria, ricerca, Git e debug."
+    "Tornado IDE e' un ambiente di sviluppo per microcontrollori basato su PlatformIO: progetti, compilazione, caricamento, errori cliccabili che portano alla riga del sorgente e monitor seriale con grafico in tempo reale.",
+    "Supporta ESP32 (tutte le varianti), ESP8266, AVR, SAM, RP2040 e STM32. Per RP2040 il caricamento riconosce la scheda in BOOTSEL (drive RPI-RP2) oppure la porta in esecuzione, la porta da sola in BOOTSEL con un reset a 1200 baud e copia il file UF2.",
+    "Il pannello Flash integra il programmatore: rileva il chip, scrive uno o piu' file binari con verifica, esegue backup e cancellazione del flash tramite esptool o avrdude, liberando e ripristinando da solo il monitor seriale."
   ],
   "features": [
-    "Progetti PlatformIO nuovi o esistenti, con modelli pronti",
-    "Compila / Carica / Ferma / Pulisci, scelta di ambiente e porta",
-    "Errori e avvisi cliccabili, marcatori nel margine dell'editor",
-    "Monitor seriale e grafico dei valori numerici",
-    "Memoria Flash/RAM con storico e analisi dei simboli",
-    "Gestore schede e librerie che modificano platformio.ini"
+    "Progetti PlatformIO: nuovo progetto da schede predefinite, compilazione, caricamento, pulizia",
+    "ESP32, ESP8266, AVR, SAM, RP2040 (Waveshare RP2040-Zero, Pico, Nano RP2040 Connect) e STM32 (Nucleo, Blue Pill, Black Pill)",
+    "Caricamento RP2040 via UF2 con reset a 1200 baud e rilevamento automatico del drive RPI-RP2",
+    "Pannello Flash: rilevamento chip, scrittura con verifica, backup e cancellazione (esptool, avrdude)",
+    "Errori e avvisi cliccabili con evidenza nel codice",
+    "Monitor seriale, grafico in tempo reale, memoria RAM/Flash con storico",
+    "Debugger, integrazione Git, ricerca nel progetto e tabelle di partizioni",
+    "Tema nero/arancione della Tornado Suite, diagnostica integrata (Ctrl+Shift+D)"
   ],
   "version": "0.2",
   "released": "2026-11-16",
   "platforms": [
     "Windows 10/11 x64"
   ],
-  "requirements": "PlatformIO (installabile dal programma di setup); scheda ESP32 per il caricamento",
+  "requirements": "Windows 10/11 x64. PlatformIO Core (installabile dal programma); al primo uso scarica piattaforme e toolchain, quindi serve la connessione a Internet. Per RP2040 serve una scheda con USB nativo; il pannello Flash richiede esptool/avrdude.",
   "downloads": [
     {
       "label": "Installer Windows",
       "file": "TornadoESPIDE-Setup-0.2.exe",
       "platform": "Windows",
-      "sha256": "54c42d440d0046236b1351d16b17833455c3d2733e3f2e49b7c9d86dd6fd2eb5"
+      "sha256": "22b5732a67ed151fe73977e26c8cfd1670eb74f5f9f2153069a40ac0bec44e58"
     },
     {
       "label": "Manuale PDF",
@@ -38,15 +41,12 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornado-ide-esp32-sorgenti-0.2.zip",
       "platform": "Python",
-      "sha256": "78a97a4083fe4be5d01cf85c9c34e91e12d24d5461cc1af9b0b4e8749a8f1246"
+      "sha256": "caec051c51d826c12ab31eab5f6ddef6d751e7cd0381e6eecdb9cfa9078a5fa5"
     }
   ],
   "screenshots": [
-    "img/01_senza_progetto.png",
-    "img/02_progetto.png",
-    "img/03_problemi.png",
-    "img/04_compilazione.png",
-    "img/05_memoria.png"
+    "img/01_ide_rp2040.png",
+    "img/02_flash.png"
   ],
   "changelog": [
     {

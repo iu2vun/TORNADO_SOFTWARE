@@ -38,16 +38,11 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornadovna-sorgenti-1.0.0.zip",
       "platform": "Python",
-      "sha256": "fe1758ab4f34215e9801957ae2ce89e586e30aac7f2c4924a3562e757e5d34d1"
+      "sha256": "3804ad8c049b99c0dad43a83ad82961fb9a8f8f1aaaa92658508417a286b5ae3"
     }
   ],
   "screenshots": [
-    "img/01_finestra.png",
-    "img/02_marker.png",
-    "img/03_analisi.png",
-    "img/04_tracce.png",
-    "img/05_calibrazione.png",
-    "img/06_stato.png"
+    "img/01_misura.png"
   ],
   "changelog": [
     {

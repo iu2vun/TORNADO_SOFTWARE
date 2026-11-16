@@ -1,0 +1,58 @@
+{
+  "name": "Tornado Visualizer",
+  "tagline": "Visualizzatore di PCB e schemi Altium (PcbDoc, SchDoc) e di file Gerber/Excellon, senza Altium installato",
+  "category": "Strumenti",
+  "order": 15,
+  "description": [
+    "Tornado Visualizer apre direttamente i file Altium Designer (.PcbDoc e .SchDoc) e i file di produzione Gerber RS-274X ed Excellon, senza bisogno di Altium ne' di altri programmi. E' pensato per controllare rapidamente un progetto, un pacchetto di fabbricazione o la scheda di un fornitore.",
+    "Il PCB e' disegnato layer per layer (tracce, archi, pad, via, zone, regioni, testi, contorno scheda), con elenco componenti e reti. Gli schemi mostrano simboli, pin, fili, etichette di rete e parametri, anche per componenti multi-parte e fogli di dimensioni diverse.",
+    "Per i Gerber il programma riconosce il ruolo di ciascun layer dal nome o dalle estensioni X2, applica macro di apertura, polarita', step & repeat e fori Excellon. Misure, evidenza di rete, esportazione in PNG e PDF vettoriale sono comuni a tutti i formati."
+  ],
+  "features": [
+    "Apre PcbDoc, SchDoc, Gerber RS-274X ed Excellon (anche trascinando file o cartelle)",
+    "PCB Altium: tracce, archi, pad, via, zone, regioni, testi e contorno, con elenco layer attivabili",
+    "Schemi Altium: simboli, pin, fili, etichette di rete, parametri, componenti multi-parte",
+    "Gerber: macro di apertura, regioni, archi, polarita' chiaro/scuro, step & repeat, fori e slot Excellon",
+    "Riconoscimento automatico del layer da nome file o attributo X2",
+    "Elenco componenti con zoom sul componente e selezione/evidenza di rete con un clic",
+    "Strumento di misura delle distanze",
+    "Vista specchiata per il lato bottom",
+    "Esportazione in PNG e in PDF vettoriale",
+    "Tema nero/arancione della Tornado Suite, diagnostica integrata (Ctrl+Shift+D)"
+  ],
+  "version": "0.1.0",
+  "released": "2026-11-16",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "Windows 10/11 x64. Nessuna installazione di Python necessaria con l'installer. Il formato Altium e' letto con tecniche di analisi indipendenti: file molto recenti o con funzioni particolari possono mostrare differenze rispetto ad Altium.",
+  "downloads": [
+    {
+      "label": "Installer Windows",
+      "file": "TornadoVisualizer-Setup-0.1.0.exe",
+      "platform": "Windows",
+      "sha256": "9c175273cf4711577ac95a704831ba16fca5f653a5275394804814fbbc7659c6"
+    },
+    {
+      "label": "Sorgenti Python (zip)",
+      "file": "tornado-visualizer-sorgenti-0.1.0.zip",
+      "platform": "Python",
+      "sha256": "99220df687a405ca87cd02185b1fe73521b03eed631925b0bc14a41d888e5e83"
+    }
+  ],
+  "screenshots": [
+    "img/01_pcb_altium.png",
+    "img/02_schema_altium.png",
+    "img/03_gerber.png"
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-16",
+      "notes": [
+        "Prima versione pubblica."
+      ]
+    }
+  ],
+  "source_url": "https://github.com/iu2vun/TORNADO_SOFTWARE/tree/main/src/tornado-visualizer"
+}

@@ -181,6 +181,8 @@ class BoardPreset:
 
 
 ESP_EXTRA = ("monitor_filters = esp32_exception_decoder",)     # decodifica gli stack trace dei crash (pio device monitor)
+RP2040_FORK = "https://github.com/maxgerhardt/platform-raspberrypi.git"   # piattaforma con core earlephilhower (arduino-pico) e molte più schede
+RP2040_EXTRA = ("board_build.core = earlephilhower", "board_build.filesystem_size = 0.5m")
 PIN_ESP32_2X = "espressif32@6.9.0"                              # core Arduino-ESP32 2.x: le API del core 3.x sono incompatibili con molto codice esistente
 
 
@@ -199,7 +201,93 @@ PRESETS: tuple[BoardPreset, ...] = (
     BoardPreset("due", "Arduino Due (Programming Port)", "atmelsam", monitor_speed=9600),
     BoardPreset("d1_mini", "Wemos D1 Mini (ESP8266)", "espressif8266"),
     BoardPreset("nodemcuv2", "NodeMCU v2 (ESP8266)", "espressif8266"),
+    # RP2040: di default il fork maxgerhardt con core earlephilhower (arduino-pico). La piattaforma «raspberrypi» ufficiale
+    # (core mbed) non conosce la Zero e non supporta Pico 2 (RP2350): resta solo per la Nano RP2040 Connect.
+    BoardPreset("waveshare_rp2040_zero", "Waveshare RP2040-Zero", RP2040_FORK, extra=RP2040_EXTRA),
+    BoardPreset("pico", "Raspberry Pi Pico (RP2040)", RP2040_FORK, extra=RP2040_EXTRA),
+    BoardPreset("nanorp2040connect", "Arduino Nano RP2040 Connect (core ufficiale mbed)", "raspberrypi"),
+    # STM32 (piattaforma «ststm32», framework Arduino)
+    BoardPreset("nucleo_f103rb", "STM32 Nucleo F103RB", "ststm32"),
+    BoardPreset("nucleo_f401re", "STM32 Nucleo F401RE", "ststm32"),
+    BoardPreset("bluepill_f103c8", "STM32 Blue Pill F103C8", "ststm32"),
+    BoardPreset("blackpill_f411ce", "STM32 Black Pill F411CE", "ststm32"),
 )
+
+
+# ------------------------------------------------------------------ famiglie di MCU
+
+FAMILIES = ("esp32", "esp8266", "avr", "sam", "rp2040", "stm32", "altro")
+FAMILY_NAMES = {"esp32": "ESP32", "esp8266": "ESP8266", "avr": "AVR (Arduino)", "sam": "Atmel SAM", "rp2040": "RP2040", "stm32": "STM32", "altro": "Altro"}
+_PLATFORM_FAMILY = {"espressif32": "esp32", "espressif8266": "esp8266", "atmelavr": "avr", "atmelsam": "sam", "raspberrypi": "rp2040", "ststm32": "stm32"}
+
+
+def family(platform: str) -> str:
+    """Famiglia di MCU dal valore di ``platform`` (anche con versione ``@x`` o URL git ``.../platform-raspberrypi.git``)."""
+    p = platform.strip().lower()
+    if not p:
+        return "altro"
+    base = re.split(r"[@#]", p, maxsplit=1)[0].rstrip("/")
+    base = re.sub(r"\.git$", "", base).rsplit("/", 1)[-1]
+    base = base.removeprefix("platform-")
+    return _PLATFORM_FAMILY.get(base, "altro")
+
+
+def default_monitor_speed(platform: str) -> int:
+    """Baud di partenza del monitor: 115200 per ESP/RP2040/STM32 (USB CDC o UART veloce), 9600 per AVR/SAM/altro."""
+    return 115200 if family(platform) in ("esp32", "esp8266", "rp2040", "stm32") else 9600
+
+
+# ------------------------------------------------------------------ RP2040: BOOTSEL / UF2
+
+RP_VID = 0x2E8A                      # Raspberry Pi Ltd (Pico in esecuzione con CDC USB e anche ROM BOOTSEL)
+UF2_MARKERS = ("RPI-RP2", "RP2350")  # Board-ID in INFO_UF2.TXT del bootloader ROM
+
+
+def is_rp_uf2_info(text: str) -> bool:
+    """True se il contenuto di INFO_UF2.TXT è quello del bootloader ROM di un RP2040/RP2350."""
+    return any(m in text for m in UF2_MARKERS)
+
+
+def _uf2_candidates() -> list[str]:
+    import glob
+
+    if os.name == "nt":
+        return [f"{c}:\\" for c in "CDEFGHIJKLMNOPQRSTUVWXYZ"]     # A: e B: esclusi (floppy: attese inutili)
+    pats = ["/Volumes/*", "/media/*", "/media/*/*", "/run/media/*/*", "/mnt/*"]
+    return sorted({p for pat in pats for p in glob.glob(pat) if os.path.isdir(p)})
+
+
+def find_uf2_drives(candidates: Optional[Iterable[str]] = None) -> list[str]:
+    """Cartelle/unità che contengono INFO_UF2.TXT di un RP2040/RP2350 in BOOTSEL (drive «RPI-RP2»)."""
+    out = []
+    for c in (_uf2_candidates() if candidates is None else candidates):
+        f = os.path.join(c, "INFO_UF2.TXT")
+        try:
+            if os.path.isfile(f) and is_rp_uf2_info(Path(f).read_text(encoding="utf-8", errors="replace")):
+                out.append(c)
+        except OSError:
+            continue
+    return out
+
+
+def find_uf2_file(root: str, env: str) -> Optional[str]:
+    """UF2 prodotto dalla compilazione dell'ambiente (``firmware.uf2`` oppure l'unico/più recente ``*.uf2``)."""
+    d = Path(root) / ".pio" / "build" / env
+    f = d / "firmware.uf2"
+    if f.is_file():
+        return str(f)
+    cand = sorted(d.glob("*.uf2"), key=lambda p: p.stat().st_mtime, reverse=True) if d.is_dir() else []
+    return str(cand[0]) if cand else None
+
+
+def rp_port(ports: Iterable, selected: str = "") -> str:
+    """Porta seriale di un RP2040 in esecuzione (VID 0x2E8A): quella scelta se è tale, altrimenti l'unica trovata, altrimenti ''.
+
+    ``ports``: oggetti con attributi ``name`` e ``vid`` (PortInfo)."""
+    rps = [p for p in ports if getattr(p, "vid", None) == RP_VID]
+    if selected:
+        return selected if any(p.name == selected for p in rps) else ""
+    return rps[0].name if len(rps) == 1 else ""
 
 
 _NAME_OK = re.compile(r"^[A-Za-z0-9_.\- ]+$")

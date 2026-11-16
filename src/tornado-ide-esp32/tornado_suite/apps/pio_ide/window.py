@@ -32,6 +32,7 @@ from ...tornado_diag.dialog import DiagnosticsDialog
 from ..tornado_term.panel import TerminalPanel
 from ..tornado_term.serial_core import PortInfo, list_ports
 from .dialogs import BoardManager, LibraryManager
+from .flash_panel import FlashPanel
 from .editor_ext import PioEditorBase
 from .panels import DebugPanel, FindBar, GitPanel, InstallDialog, MemoryPanel, OtaDialog, PartitionDialog, SearchPanel
 from .plotter import PlotterPanel
@@ -442,6 +443,8 @@ class EspIde(QWidget):
         self._mem: dict[str, tuple[float, int, int]] = {}
         self._took: Optional[float] = None
         self._reconnect = None
+        self._uf2_drive = ""
+        self._uf2_env = ""
         self._clock = QElapsedTimer()
         self._tick = QTimer(self)
         self._tick.setInterval(500)
@@ -516,6 +519,9 @@ class EspIde(QWidget):
         self.bottom.addTab(self.search, "Cerca")
         self.bottom.addTab(self.git, "Git")
         self.bottom.addTab(self.dbg, "Debug")
+        self.flash = FlashPanel(self.s, self.selected_port, before=self._flash_before, after=self._flash_after,
+                                busy=lambda: self.runner.running)
+        self.bottom.addTab(self.flash, "Flash")
 
         ed_box = QWidget()
         eb = QVBoxLayout(ed_box)
@@ -1055,8 +1061,82 @@ class EspIde(QWidget):
             except Exception:  # noqa: BLE001
                 self._reconnect = None
             self.term.disconnect_link()
+        if self._rp2040_upload(e):
+            return
         port = self.selected_port()
         self._start("upload", ["run", "-e", e, "-t", "upload"] + (["--upload-port", port] if port else []), "Caricamento")
+
+    # -------------------------------------------------- RP2040: BOOTSEL / UF2
+    def _rp2040_upload(self, env: str) -> bool:
+        """Percorso di caricamento per RP2040. True se ha avviato lui l'operazione; False: si usa il caricamento normale di pio.
+
+        Scheda già in BOOTSEL (drive RPI-RP2): compila e copia l'UF2. Scheda in esecuzione (VID 0x2E8A): reset a 1200 baud,
+        attesa del drive, poi come sopra. Nessun drive: ci pensa pio (protocollo dell'ambiente)."""
+        e = self.info.env(env)
+        if not e or pc.family(e.platform) != "rp2040":
+            return False
+        drives = pc.find_uf2_drives()
+        if not drives:
+            port = pc.rp_port(list_ports(), self.selected_port())
+            if port:
+                self.console.add_line(f"RP2040 su {port}: reset a 1200 baud verso BOOTSEL…", "cmd")
+                drives = self._touch_1200_wait(port)
+        if not drives:
+            self.console.add_line("Nessun drive RPI-RP2: carico con il protocollo dell'ambiente (pio).", "dim")
+            return False
+        self._uf2_drive = drives[0]
+        self._uf2_env = env
+        self._start("build_uf2", ["run", "-e", env], "Compilazione")
+        return True
+
+    def _touch_1200_wait(self, port: str, timeout: float = 6.0) -> list[str]:
+        import time
+
+        try:
+            import serial
+
+            serial.Serial(port, 1200).close()
+        except Exception as ex:  # noqa: BLE001
+            log.warning("reset 1200 baud su %s non riuscito: %s", port, ex)
+            self.console.add_line(f"Reset 1200 baud non riuscito: {ex}", "warning")
+            return []
+        from PySide6.QtWidgets import QApplication
+
+        t0 = time.monotonic()
+        while time.monotonic() - t0 < timeout:
+            QApplication.processEvents()
+            d = pc.find_uf2_drives()
+            if d:
+                return d
+            time.sleep(0.2)
+        return []
+
+    def _uf2_after_build(self) -> None:
+        """Compilazione riuscita con scheda in BOOTSEL: copia l'UF2 sul drive, altrimenti lascia fare a pio."""
+        import shutil
+
+        drive, env = self._uf2_drive, self._uf2_env
+        uf2 = pc.find_uf2_file(self.root, env)
+        if not uf2:
+            self.console.add_line("Nessun .uf2 prodotto dalla compilazione: carico con «pio -t upload».", "dim")
+            self._start("upload", ["run", "-e", env, "-t", "upload"], "Caricamento")
+            return
+        if not os.path.isdir(drive):
+            drives = pc.find_uf2_drives()
+            if not drives:
+                self._state("Drive RPI-RP2 scomparso: rimetti la scheda in BOOTSEL e ricarica", P.danger)
+                return
+            drive = drives[0]
+        try:
+            shutil.copyfile(uf2, os.path.join(drive, os.path.basename(uf2)))
+        except OSError as ex:
+            log.exception("copia UF2 non riuscita")
+            self._state(f"Copia UF2 su {drive} non riuscita: {ex}", P.danger)
+            self.console.add_line(f"Copia UF2 non riuscita: {ex}", "error")
+            return
+        self.console.add_line(f"UF2 copiato su {drive} ({os.path.basename(uf2)}): la scheda si riavvia da sola.", "ok")
+        self._state(f"Caricamento riuscito (UF2 su {drive})", P.ok)
+        self._last_run = f"Caricamento UF2 su {drive}"
 
     def pulisci(self) -> None:
         e = self.env_name()
@@ -1130,7 +1210,7 @@ class EspIde(QWidget):
     def _on_finished(self, code: int) -> None:
         self._tick.stop()
         self.progress.hide()
-        name = {"build": "Compilazione", "upload": "Caricamento", "clean": "Pulizia", "install": "Installazione", "check": "Analisi statica",
+        name = {"build": "Compilazione", "upload": "Caricamento", "build_uf2": "Compilazione", "clean": "Pulizia", "install": "Installazione", "check": "Analisi statica",
                 "test": "Test", "compiledb": "Indice simboli", "fs": "File system"}.get(self._run_kind, "Operazione")
         took = self._took if self._took is not None else self._clock.elapsed() / 1000
         errs = [d for d in self._diags.values() if d.severity == "error"]
@@ -1153,9 +1233,25 @@ class EspIde(QWidget):
             first = next((d for d in errs if os.path.isfile(pc.resolve_path(self.root, d.file)) and not self._is_external(pc.resolve_path(self.root, d.file))), None)
             if first is not None:
                 self.open_diag(first)
+        if code == 0 and self._run_kind == "build_uf2":
+            self._uf2_after_build()
+        if self._reconnect is not None and not self.runner.running:
+            QTimer.singleShot(3000 if self._run_kind == "build_uf2" else 1500, self._reopen_monitor)
+        self._update_actions()
+
+    def _flash_before(self) -> None:
+        """Il pannello Flash ha bisogno della porta libera: stacca il monitor (lo riattacca _flash_after)."""
+        self._reconnect = None
+        if self.term.is_connected:
+            try:
+                self._reconnect = self.term.session.link.config
+            except Exception:  # noqa: BLE001
+                self._reconnect = None
+            self.term.disconnect_link()
+
+    def _flash_after(self) -> None:
         if self._reconnect is not None:
             QTimer.singleShot(1500, self._reopen_monitor)
-        self._update_actions()
 
     def _reopen_monitor(self) -> None:
         cfg, self._reconnect = self._reconnect, None
@@ -1754,6 +1850,7 @@ class EspIde(QWidget):
     def closeEvent(self, e) -> None:  # noqa: N802
         self.runner.stop()
         self.dbg.sess.stop()
+        self.flash.shutdown()
         if self._probe is not None:
             self._probe.kill()
         self.s.setValue(S + "aperti", [x.path for x in self._all_editors() if x.path])
