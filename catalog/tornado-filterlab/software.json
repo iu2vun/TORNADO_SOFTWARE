@@ -1,0 +1,49 @@
+{
+  "name": "Tornado FilterLab",
+  "tagline": "Progetto di filtri dall'audio a 26,5 GHz, con verifica EM e PCB per KiCad",
+  "category": "RF / Misure",
+  "order": 8,
+  "description": [
+    "FilterLab progetta filtri dall'audio fino a 26,5 GHz: sintesi LC con le principali famiglie (Butterworth, Chebyshev, Bessel, ellittici), filtri distribuiti in microstrip (passa-basso a impedenza a gradini e passa-banda a linee accoppiate), filtri attivi audio e scelta del substrato con pro e contro.",
+    "Le linee a impedenza controllata sono calcolate sul substrato scelto e i layout vengono confrontati con i minimi del costruttore di PCB. Per i filtri distribuiti il programma può lanciare una simulazione full-wave con openEMS sull'intero filtro e correggere le lunghezze delle sezioni.",
+    "Dal progetto genera una PCB di test con struttura THRU, via di massa e connettori, esportabile in KiCad, DXF e Gerber X2 con Excellon, accompagnata da un rapporto DRC."
+  ],
+  "features": [
+    "Sintesi LC, teoria interattiva (effetto di ogni componente), componenti reali contro ideali",
+    "Monte Carlo e sensibilità con maschera di specifica, BOM con serie E",
+    "Filtri distribuiti microstrip: LPF a gradini e PCL passa-banda",
+    "Verifica full-wave openEMS con controllo del bilancio di energia e regolazione delle lunghezze",
+    "PCB di test: export KiCad (zone a rete), DXF, Gerber X2, Excellon",
+    "DRC sui minimi del costruttore (preset prudente, standard 6/6, fine 4/4 mil, personalizzabili)"
+  ],
+  "version": "1.0.0",
+  "released": "2026-11-22",
+  "platforms": [
+    "Windows 10/11 x64"
+  ],
+  "requirements": "Windows 10/11 a 64 bit. La verifica full-wave richiede openEMS (opzionale, non incluso).",
+  "downloads": [
+    {
+      "label": "Codice sorgente su GitHub",
+      "url": "https://github.com/iu2vun/FilterLab",
+      "platform": "Python"
+    }
+  ],
+  "screenshots": [
+    "img/01_filtro_lc.png",
+    "img/02_distribuiti_pcl.png",
+    "img/03_pcb_test.png",
+    "img/04_monte_carlo.png",
+    "img/05_substrati.png"
+  ],
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-22",
+      "notes": [
+        "Prima versione pubblica: core a linee di trasmissione, verifica EM con openEMS, export PCB con DRC, interfaccia Tornado."
+      ]
+    }
+  ],
+  "source_url": "https://github.com/iu2vun/FilterLab"
+}
