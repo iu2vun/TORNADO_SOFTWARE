@@ -7,7 +7,7 @@ from .const import TRACE_COLORS
 class SmithChart(pg.PlotWidget):
     def __init__(self):
         super().__init__()
-        self.setBackground("#0e1013")
+        self.setBackground("#000000")
         self.setAspectLocked(True)
         self.hideAxis("bottom"); self.hideAxis("left")
         self.setXRange(-1.05, 1.05); self.setYRange(-1.05, 1.05)
@@ -16,9 +16,9 @@ class SmithChart(pg.PlotWidget):
         self._curves: dict = {}
 
     def _draw_grid(self):
-        grid = pg.mkPen("#2a2f37", width=1)
-        rim  = pg.mkPen("#6b7280",    width=1.5)
-        ax   = pg.mkPen("#4a505a",    width=1)
+        grid = pg.mkPen("#1010FF", width=1)
+        rim  = pg.mkPen("#FFFFFF",    width=1.5)
+        ax   = pg.mkPen("#FFFFFF",    width=1)
         t    = np.linspace(0, 2 * np.pi, 361)
         # cerchio unitario
         self.plot(np.cos(t), np.sin(t), pen=rim)

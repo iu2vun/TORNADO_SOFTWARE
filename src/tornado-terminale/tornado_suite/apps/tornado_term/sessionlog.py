@@ -120,7 +120,7 @@ class SessionLog(QObject):
 
 
 class HexWindow(QDialog):
-    """Vista esadecimale live di tutto il traffico (RX in verde, TX in arancione)."""
+    """Vista esadecimale live di tutto il traffico (RX in verde, TX in giallo)."""
 
     MAX_LINES = 20000
 

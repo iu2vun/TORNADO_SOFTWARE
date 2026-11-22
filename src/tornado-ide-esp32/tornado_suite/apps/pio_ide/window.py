@@ -41,7 +41,7 @@ from . import icons_ext  # noqa: F401  (registra le icone «chip», «pio_upload
 from . import pio_core as pc
 
 log = get_logger("espide")
-WARN = "#ffd23f"      # stesso giallo degli avvisi dell'IDE Python
+WARN = "#FFFF00"      # stesso giallo degli avvisi dell'IDE Python
 KIND_COLOR = {"error": P.danger, "warning": WARN, "ok": P.ok, "cmd": P.accent, "dim": P.text_dim, "text": P.text}
 S = "espide/"         # prefisso chiavi QSettings
 KNOWN_VID = {0x303A: "Espressif", 0x10C4: "CP210x", 0x1A86: "CH340", 0x0403: "FTDI", 0x2341: "Arduino", 0x2A03: "Arduino", 0x239A: "Adafruit"}

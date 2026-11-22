@@ -1,4 +1,4 @@
-"""Tema scuro/arancione (QSS + palette grafici) e icone generate a runtime."""
+"""Tema HP 9845C (nero, 8 colori puri) + tema chiaro per le esportazioni (QSS + palette grafici) e icone generate a runtime."""
 from __future__ import annotations
 
 import os
@@ -33,8 +33,8 @@ class Theme:
 
 
 TRACE_COLORS_DARK = (
-    "#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#8a5a00",
-    "#ffc933", "#ffefb8", "#cc8a00", "#e69500", "#fff4d6", "#996600",
+    "#FFFF00", "#00FFFF", "#FFFFFF", "#00FF00", "#FF00FF", "#FF0000",
+    "#FFFF00", "#00FFFF", "#FFFFFF", "#00FF00", "#FF00FF", "#FF0000",
 )
 TRACE_COLORS_LIGHT = (
     "#d95f00", "#0077b6", "#4d8f00", "#c2185b", "#b58900", "#3a56c8",
@@ -42,10 +42,10 @@ TRACE_COLORS_LIGHT = (
 )
 
 DARK = Theme(
-    name="dark", bg="#0a0600", panel="#0f0802", panel_alt="#140b02", border="#4a2f00",
-    text="#ffb000", text_dim="#b87800", accent="#ffb000", accent_hover="#ffd060",
-    accent_press="#b87800", on_accent="#0a0600", plot_bg="#050300", grid="#2e1d00",
-    grid_minor="#1a1100", axis="#b87800", legend_bg="#0f0802dd", selection="#ffb00033",
+    name="dark", bg="#000000", panel="#000000", panel_alt="#000000", border="#1010FF",
+    text="#FFFFFF", text_dim="#00FFFF", accent="#FFFFFF", accent_hover="#FFFF00",
+    accent_press="#00FFFF", on_accent="#000000", plot_bg="#000000", grid="#1010FF",
+    grid_minor="#1010FF", axis="#00FFFF", legend_bg="#000000dd", selection="#FFFF0033",
     traces=TRACE_COLORS_DARK,
 )
 
@@ -250,7 +250,7 @@ PlotPanel {{ border: 1px solid {th.border}; }}
 
 def apply_theme(app: QApplication, th: Theme = DARK) -> None:
     app.setStyle("Fusion")
-    f = QFont("Segoe UI", 9)
+    f = QFont("VT323", 13)
     f.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
     app.setFont(f)
     app.setStyleSheet(build_qss(th))

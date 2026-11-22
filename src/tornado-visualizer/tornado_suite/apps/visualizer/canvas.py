@@ -8,21 +8,21 @@ from PySide6.QtWidgets import QWidget
 from ...core.theme import P
 from ..altium_core import layer_name
 
-# colori layer PCB (distinguibili su fondo nero, accordati al tema ambra)
-LAYER_COL = {1: "#ff5a36", 32: "#3d8bff", 33: "#ffd060", 34: "#c9a24a", 35: "#8a6a50", 36: "#506a8a",
-             37: "#7a3a8a", 38: "#4a3a8a", 56: "#ff3cff", 74: "#cccccc", 55: "#888888", 73: "#aaaaaa"}
+# colori layer PCB (distinguibili su fondo nero, tema HP 9845C: 8 colori puri)
+LAYER_COL = {1: "#FF0000", 32: "#00FFFF", 33: "#FFFF00", 34: "#FFFF00", 35: "#FF0000", 36: "#1010FF",
+             37: "#1010FF", 38: "#1010FF", 56: "#FF00FF", 74: "#FFFFFF", 55: "#FFFFFF", 73: "#FFFFFF"}
 
 
 def layer_color(n: int) -> QColor:
     if n in LAYER_COL:
         return QColor(LAYER_COL[n])
     if 2 <= n <= 31:
-        return QColor("#7acb54")
+        return QColor("#00FF00")
     if 39 <= n <= 54:
-        return QColor("#b0a040")
+        return QColor("#FFFF00")
     if 57 <= n <= 72:
-        return QColor("#8f8f8f")
-    return QColor("#707070")
+        return QColor("#FFFFFF")
+    return QColor("#FFFFFF")
 
 
 def _arc_pts(cx, cy, r, a0, a1, n=None):
@@ -220,13 +220,13 @@ class Canvas(QWidget):
         if not pts:
             return
         mpx = 1.0 / self.scale
-        p.setPen(self._pen(QColor("#00e5ff"), 1.5 * mpx))
+        p.setPen(self._pen(QColor("#00FFFF"), 1.5 * mpx))
         for q in pts:
             p.drawEllipse(QPointF(*q), 4 * mpx, 4 * mpx)
         if len(pts) == 2:
             (x1, y1), (x2, y2) = pts
             p.drawLine(QPointF(x1, y1), QPointF(x2, y2))
-            p.setPen(QColor("#00e5ff"))
+            p.setPen(QColor("#00FFFF"))
             self._text(p, (x1 + x2) / 2 + 6 * mpx, (y1 + y2) / 2 + 6 * mpx, self.meas_text(), 13 * mpx)
 
     def meas_text(self) -> str:
@@ -286,7 +286,7 @@ class Canvas(QWidget):
         order = sorted(vis, key=lambda n: (0 if n in (32,) else 1 if 2 <= n <= 31 else 2 if n == 1 else 3 + (n in (33, 34))))
         # contorno scheda
         if d.outline:
-            p.setPen(self._pen(QColor("#e0e0e0"), 8 * mpx if 8 * mpx > 8 else 8))
+            p.setPen(self._pen(QColor("#FFFFFF"), 8 * mpx if 8 * mpx > 8 else 8))
             p.setBrush(Qt.BrushStyle.NoBrush)
             poly = QPolygonF([QPointF(x, y) for x, y in d.outline] + [QPointF(*d.outline[0])])
             p.drawPolyline(poly)
@@ -329,12 +329,12 @@ class Canvas(QWidget):
             for v in d.vias:
                 if not ({1, 32} & vis) and not (vis & set(range(2, 32))):
                     continue
-                p.setPen(Qt.PenStyle.NoPen); p.setBrush(QColor("#b9b9b9"))
+                p.setPen(Qt.PenStyle.NoPen); p.setBrush(QColor("#FFFFFF"))
                 p.drawEllipse(QPointF(v.x, v.y), v.dia / 2, v.dia / 2)
                 p.setBrush(QColor("#000000"))
                 p.drawEllipse(QPointF(v.x, v.y), v.hole / 2, v.hole / 2)
         if self.hl_net >= 0:
-            hc = QColor("#ffffff")
+            hc = QColor("#FFFFFF")
             for t in d.tracks:
                 if t.net == self.hl_net and t.layer in vis:
                     p.setPen(self._pen(hc, t.width)); p.drawLine(QPointF(t.x1, t.y1), QPointF(t.x2, t.y2))
@@ -400,7 +400,7 @@ class Canvas(QWidget):
         p.setPen(self._pen(QColor(P.border), 8)); p.setBrush(Qt.BrushStyle.NoBrush)
         p.drawRect(QRectF(0, 0, W, H))
         TXT, DIM = QColor(P.text), QColor(P.text_dim)
-        WIRE, BODY, PEAK = QColor("#7fd35a"), QColor(P.peak), QColor(P.accent_hover)
+        WIRE, BODY, PEAK = QColor("#00FF00"), QColor(P.peak), QColor(P.accent_hover)
         font = QFont("Consolas"); p.setFont(font)
         for pr in d.prims:
             k, pts = pr.kind, pr.pts
@@ -449,24 +449,24 @@ class Canvas(QWidget):
             elif k in ("designator", "param", "label", "netlabel"):
                 if not pr.text:
                     continue
-                p.setPen(PEAK if k == "designator" else (QColor("#7fd35a") if k == "netlabel" else (DIM if k == "param" else TXT)))
+                p.setPen(PEAK if k == "designator" else (QColor("#00FF00") if k == "netlabel" else (DIM if k == "param" else TXT)))
                 self._text(p, pts[0][0], pts[0][1], pr.text, 70, pr.extra.get("rot", 0) * 90)
             elif k == "power":
                 x, y = pts[0]
                 rot = pr.extra.get("rot", 0)
                 dx, dy = [(0, 1), (-1, 0), (0, -1), (1, 0)][rot % 4]
-                p.setPen(self._pen(QColor("#ff6a3d"), 8, False))
+                p.setPen(self._pen(QColor("#FF0000"), 8, False))
                 ex, ey = x + dx * 100, y + dy * 100
                 p.drawLine(QPointF(x, y), QPointF(ex, ey))
                 if pr.extra.get("style", 1) in (1, 2, 3, 0, 4):
                     px, py = -dy, dx
                     p.drawLine(QPointF(ex + px * 50, ey + py * 50), QPointF(ex - px * 50, ey - py * 50))
-                p.setPen(QColor("#ff6a3d"))
+                p.setPen(QColor("#FF0000"))
                 self._text(p, ex + dx * 20 + (20 if dx else -30), ey + dy * 20 + (-15 if dx else 0), pr.text, 60)
             elif k == "port":
                 x, y = pts[0]
                 w, h = pr.extra.get("w", 200), pr.extra.get("h", 100)
-                p.setPen(self._pen(QColor("#ff6a3d"), 6, False)); p.setBrush(QColor(255, 106, 61, 40))
+                p.setPen(self._pen(QColor("#FF0000"), 6, False)); p.setBrush(QColor(255, 106, 61, 40))
                 p.drawRect(QRectF(x, y - h / 2, w, h))
                 p.setPen(TXT); self._text(p, x + 15, y - 20, pr.text, 60)
             elif k in ("arc", "ellipse"):

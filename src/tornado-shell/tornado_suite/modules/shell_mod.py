@@ -60,11 +60,11 @@ class ShellModulo(QWidget):
             bh.addWidget(w)
         bh.addWidget(self.lbl, 1)
         v.addWidget(bar)
-        line = QFrame(); line.setFixedHeight(2); line.setStyleSheet(f"background:{P.accent};border:none")   # filo arancione sotto la barra
+        line = QFrame(); line.setFixedHeight(2); line.setStyleSheet(f"background:{P.accent};border:none")   # filo sotto la barra
         v.addWidget(line)
         self.engine = AnsiEngine(cols=120, rows=30)
-        fam = "Cascadia Mono" if sys.platform == "win32" else None
-        self.term = TerminalWidget(self.engine, font_family=fam, font_size=int(settings().value("shell/font", 11)))
+        fam = "VT323"                                   # font del tema HP 9845C
+        self.term = TerminalWidget(self.engine, font_family=fam, font_size=int(settings().value("shell/font_hp", 17)))
         self.term._resize_mode = ResizeMode.BUFFER
         self.pty = PtyTransport()
         self.pty.dataReceived.connect(self.engine.feed)
@@ -77,7 +77,7 @@ class ShellModulo(QWidget):
 
     def _font(self, d: int) -> None:
         self.term.font_size = max(7, min(32, self.term.font_size + d))
-        settings().setValue("shell/font", self.term.font_size)
+        settings().setValue("shell/font_hp", self.term.font_size)
 
     def scegli_cartella(self) -> None:
         d = QFileDialog.getExistingDirectory(self, "Cartella di lavoro", self.cwd)

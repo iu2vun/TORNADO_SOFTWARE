@@ -172,7 +172,7 @@ class MainWindow(QMainWindow):
             try:
                 lay = load_any(p)
                 if lay.ops or lay.holes or lay.slots:
-                    layers.append([lay, QColor(ROLE_COL.get(lay.role, "#ffb000")), lay.role not in DEFAULT_OFF])
+                    layers.append([lay, QColor(ROLE_COL.get(lay.role, "#FFFFFF")), lay.role not in DEFAULT_OFF])
                 else:
                     errs.append(f"{os.path.basename(p)}: vuoto")
             except Exception as e:  # noqa: BLE001

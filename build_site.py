@@ -21,15 +21,15 @@ def load_json(p: Path):
 def placeholder_svg(name: str, cat: str) -> str:
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">'
-        '<rect width="800" height="500" fill="#050300"/>'
-        '<g stroke="#2e1d00" stroke-width="1">'
+        '<rect width="800" height="500" fill="#000000"/>'
+        '<g stroke="#1010FF" stroke-width="1">'
         + "".join(f'<line x1="{x}" y1="0" x2="{x}" y2="500"/>' for x in range(0, 801, 50))
         + "".join(f'<line x1="0" y1="{y}" x2="800" y2="{y}"/>' for y in range(0, 501, 50))
         + "</g>"
         '<path d="M0 330 C100 330 120 140 220 140 S340 380 440 380 S560 190 660 190 S760 300 800 300" '
-        'fill="none" stroke="#ffb000" stroke-width="3"/>'
-        f'<text x="40" y="450" fill="#ffe08a" font-family="VT323,monospace" font-size="48">{E(name)}</text>'
-        f'<text x="40" y="480" fill="#b87800" font-family="VT323,monospace" font-size="26">{E(cat)}</text>'
+        'fill="none" stroke="#FFFF00" stroke-width="3"/>'
+        f'<text x="40" y="450" fill="#FFFFFF" font-family="VT323,monospace" font-size="48">{E(name)}</text>'
+        f'<text x="40" y="480" fill="#00FFFF" font-family="VT323,monospace" font-size="26">{E(cat)}</text>'
         "</svg>"
     )
 
@@ -51,19 +51,19 @@ def page(site: dict, title: str, body: str, depth: int, desc: str = "", status_t
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(full)}</title>
 <meta name="description" content="{E(desc or site['tagline'])}">
-<meta name="theme-color" content="#0a0908">
+<meta name="theme-color" content="#000000">
 <link rel="icon" type="image/png" href="{rel}assets/icon_fulmine.png">
 <link rel="preload" href="{rel}assets/fonts/VT323-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="{rel}assets/style.css?v={CSS_V}">
 </head><body>
 <div id="room"><div id="monitor"><div id="bezel"><div id="tube">
 <div id="screen">
-<header class="top"><a class="brand" href="{rel}index.html">{E(site['title'])}</a>
-<nav><a href="{rel}index.html#laboratorio">Laboratorio</a><a href="{rel}index.html#chisono">Chi sono</a><a href="{rel}index.html#software">Software</a><a href="{rel}index.html#contatti">Contatti</a></nav></header>
+<header class="top"><a class="brand" href="{rel}index.html">{E(site['title'])}</a></header>
 {body}
 <footer><div class="wrap"><span>© {E(site['title'])} — {E(site.get('location',''))}</span>
 <span>{E(site.get('callsign',''))}</span></div></footer>
 <div id="status"><span id="stmsg" data-def="&gt; SELEZIONA UN PROGRAMMA">&gt; SELEZIONA UN PROGRAMMA</span><span>{E(site.get('callsign',''))} · {E(site.get('location','').upper())}</span></div>
+<div id="softkeys"><a href="{rel}index.html#laboratorio"><b>F1</b>Laboratorio</a><a href="{rel}index.html#chisono"><b>F2</b>Chi sono</a><a href="{rel}index.html#software"><b>F3</b>Software</a><a href="{rel}index.html#contatti"><b>F4</b>Contatti</a><a href="https://github.com/{E(site['github_repo'])}" target="_blank" rel="noopener"><b>F5</b>GitHub</a></div>
 </div>
 <div id="crt"></div><div id="vig"></div><div id="glare"></div>
 </div></div>

@@ -425,7 +425,7 @@ class Session(QObject):
         self.link.auto_reconnect = self.chk_auto.isChecked()
         self.chk_rts.setChecked(s.value(p + "rts", True, bool))
         self.chk_dtr.setChecked(s.value(p + "dtr", True, bool))
-        self.sp_font.setValue(s.value(p + "font_pt", 10, int))
+        self.sp_font.setValue(s.value(p + "font_hp", 17, int))
         self.chk_lf.setChecked(s.value(p + "lf_newline", True, bool))
         self.chk_echo.setChecked(s.value(p + "local_echo", False, bool))
         self.term.local_echo = self.chk_echo.isChecked()
@@ -447,7 +447,7 @@ class Session(QObject):
             ("stop_bits", c.stop_bits), ("flow", c.flow), ("enter", self.cb_enter.currentText()),
             ("backspace", self.cb_bs.currentText()), ("home_end", self.cb_he.currentText()),
             ("auto_reconnect", self.chk_auto.isChecked()), ("rts", self.chk_rts.isChecked()),
-            ("dtr", self.chk_dtr.isChecked()), ("font_pt", self.sp_font.value()),
+            ("dtr", self.chk_dtr.isChecked()), ("font_hp", self.sp_font.value()),
             ("lf_newline", self.chk_lf.isChecked()), ("local_echo", self.chk_echo.isChecked()),
             ("fit", self.chk_fit.isChecked()), ("cols", self.sp_cols.value()), ("rows", self.sp_rows.value()),
         ):

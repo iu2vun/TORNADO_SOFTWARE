@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QFont, QFontDatabase, QPalette
 from PySide6.QtWidgets import QApplication
 
-CHANNEL_COLORS = ["#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#cc8a00", "#ffc933", "#fff4d6"]
+CHANNEL_COLORS = ["#FFFFFF", "#FFFF00", "#00FFFF", "#FFFFFF", "#FFFF00", "#00FFFF", "#FFFF00", "#FFFF00"]
 _MONO_FAMILIES = ("VT323", "Cascadia Mono", "Consolas", "DejaVu Sans Mono", "Menlo", "Liberation Mono")
 
 
@@ -32,10 +32,10 @@ def is_dark(pal: QPalette) -> bool:
 def colors_for(pal: QPalette) -> dict[str, QColor]:
     dark = is_dark(pal)
     return {
-        "rx": QColor("#ffb000") if dark else QColor("#1b7a2f"),
-        "tx": QColor("#ffe08a") if dark else QColor("#0b57b8"),
-        "event": QColor("#b87800") if dark else QColor("#6b7075"),
-        "warn": QColor("#ffd060") if dark else QColor("#b45f00"),
+        "rx": QColor("#FFFFFF") if dark else QColor("#00FF00"),
+        "tx": QColor("#FFFF00") if dark else QColor("#1010FF"),
+        "event": QColor("#00FFFF") if dark else QColor("#FFFFFF"),
+        "warn": QColor("#FFFF00") if dark else QColor("#FF0000"),
         "grid": QColor(255, 255, 255, 40) if dark else QColor(0, 0, 0, 40),
         "lane": QColor(255, 255, 255, 10) if dark else QColor(0, 0, 0, 10),
         "text": pal.color(QPalette.ColorRole.Text),
@@ -50,26 +50,22 @@ def channel_color(idx: int) -> QColor:
 def _dark_palette() -> QPalette:
     pal = QPalette()
     roles = {
-        QPalette.ColorRole.Window: "#2b2d30", QPalette.ColorRole.WindowText: "#dfe1e5",
-        QPalette.ColorRole.Base: "#1e1f22", QPalette.ColorRole.AlternateBase: "#2b2d30",
-        QPalette.ColorRole.Text: "#dfe1e5", QPalette.ColorRole.Button: "#393b40",
-        QPalette.ColorRole.ButtonText: "#dfe1e5", QPalette.ColorRole.Highlight: "#2f65ca",
-        QPalette.ColorRole.HighlightedText: "#ffffff", QPalette.ColorRole.ToolTipBase: "#393b40",
-        QPalette.ColorRole.ToolTipText: "#dfe1e5", QPalette.ColorRole.Mid: "#4a4d51",
+        QPalette.ColorRole.Window: "#000000", QPalette.ColorRole.WindowText: "#FFFFFF",
+        QPalette.ColorRole.Base: "#000000", QPalette.ColorRole.AlternateBase: "#000000",
+        QPalette.ColorRole.Text: "#FFFFFF", QPalette.ColorRole.Button: "#000000",
+        QPalette.ColorRole.ButtonText: "#FFFFFF", QPalette.ColorRole.Highlight: "#1010FF",
+        QPalette.ColorRole.HighlightedText: "#FFFFFF", QPalette.ColorRole.ToolTipBase: "#000000",
+        QPalette.ColorRole.ToolTipText: "#FFFFFF", QPalette.ColorRole.Mid: "#000000",
     }
     for role, color in roles.items():
         pal.setColor(role, QColor(color))
     return pal
 
 
-def apply_theme(app: QApplication, mode: str) -> None:
-    """mode: 'system' | 'light' | 'dark'."""
+def apply_theme(app: QApplication, mode: str = "dark") -> None:
+    """Tema HP 9845C: stile e tavolozza arrivano dal tema della suite; da solo (senza suite) palette scura Fusion."""
     app.setStyle("Fusion")
     hints = app.styleHints()
     if hasattr(hints, "setColorScheme"):  # Qt >= 6.8
-        scheme = {"dark": Qt.ColorScheme.Dark, "light": Qt.ColorScheme.Light}.get(mode, Qt.ColorScheme.Unknown)
-        hints.setColorScheme(scheme)
-    elif mode == "dark":
-        app.setPalette(_dark_palette())
-    else:
-        app.setPalette(app.style().standardPalette())
+        hints.setColorScheme(Qt.ColorScheme.Dark)
+    app.setPalette(_dark_palette())

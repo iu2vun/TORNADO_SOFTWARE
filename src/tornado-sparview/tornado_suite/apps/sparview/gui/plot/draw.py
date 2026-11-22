@@ -13,9 +13,9 @@ from ..theme import Theme, qcolor
 
 
 def font(px: int = 11, bold: bool = False, mono: bool = False) -> QFont:
-    f = QFont("Consolas" if mono else "Segoe UI")
-    f.setStyleHint(QFont.StyleHint.Monospace if mono else QFont.StyleHint.SansSerif)
-    f.setPixelSize(px)
+    f = QFont("VT323")
+    f.setStyleHint(QFont.StyleHint.Monospace)
+    f.setPixelSize(int(round(px * 1.35)))      # VT323 ha il corpo piccolo
     f.setBold(bold)
     return f
 

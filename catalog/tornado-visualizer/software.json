@@ -31,13 +31,13 @@
       "label": "Installer Windows",
       "file": "TornadoVisualizer-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": "9c175273cf4711577ac95a704831ba16fca5f653a5275394804814fbbc7659c6"
+      "sha256": "7799990cb2617a3df43162d2aac086bd853643dc92bafb1fc0f61e620959df5f"
     },
     {
       "label": "Sorgenti Python (zip)",
       "file": "tornado-visualizer-sorgenti-0.1.0.zip",
       "platform": "Python",
-      "sha256": "99220df687a405ca87cd02185b1fe73521b03eed631925b0bc14a41d888e5e83"
+      "sha256": "9a97fed8feccee22570e5b03f5cef70b108d0069ee6c237cc1842500c14aae80"
     }
   ],
   "screenshots": [

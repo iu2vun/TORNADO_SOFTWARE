@@ -18,31 +18,31 @@ from ...core.theme import P
 from .ansi_engine import AnsiEngine
 from .keymap import key_to_bytes
 
-# Palette ANSI a 16 colori, tema Tornado (nero/arancione). Le chiavi sono i nomi che usa pyte.
+# Palette ANSI a 16 colori, tema HP 9845C (8 colori puri). Le chiavi sono i nomi che usa pyte.
 # I colori semantici (rosso/verde/giallo/blu) restano riconoscibili: ls, git e i messaggi di errore dipendono da quelli.
 PALETTE: dict[str, str] = {
-    "black": "#2a2e35",
-    "red": "#ff5555",
-    "green": "#5fe3a1",
-    "brown": "#f2c94c",  # pyte chiama "brown" il giallo ANSI 33
-    "blue": "#5aa9ff",
-    "magenta": "#d58bff",
-    "cyan": "#4fd1d9",
-    "white": "#d9dce2",
-    "brightblack": "#6b7280",
-    "brightred": "#ff7a7a",
-    "brightgreen": "#86f0bd",
-    "brightbrown": "#ffe066",
-    "brightblue": "#8cc4ff",
-    "brightmagenta": "#e6adff",
-    "brightcyan": "#7fe6ec",
-    "brightwhite": "#ffffff",
+    "black": "#000000",
+    "red": "#FF0000",
+    "green": "#00FF00",
+    "brown": "#FFFF00",  # pyte chiama "brown" il giallo ANSI 33
+    "blue": "#1010FF",
+    "magenta": "#FF00FF",
+    "cyan": "#00FFFF",
+    "white": "#FFFFFF",
+    "brightblack": "#1010FF",   # grigio ANSI (commenti, testo spento): blu del tema
+    "brightred": "#FF0000",
+    "brightgreen": "#00FF00",
+    "brightbrown": "#FFFF00",
+    "brightblue": "#00FFFF",
+    "brightmagenta": "#FF00FF",
+    "brightcyan": "#00FFFF",
+    "brightwhite": "#FFFFFF",
 }
 
 DEFAULT_FG = P.text
 DEFAULT_BG = P.canvas
-SELECTION_BG = "#66ff8a1f"  # selezione: arancione dell'accento con trasparenza (#AARRGGBB)
-CURSOR_BG = P.accent        # cursore a blocco arancione, carattere sotto il cursore in P.on_accent
+SELECTION_BG = "#80FFFFFF"  # selezione: bianco semitrasparente (#AARRGGBB)
+CURSOR_BG = P.accent        # cursore a blocco bianco (video inverso), carattere sotto il cursore in P.on_accent
 CURSOR_FG = P.on_accent
 
 

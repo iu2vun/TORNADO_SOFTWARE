@@ -65,7 +65,8 @@ def _fmt(color: str, bold: bool = False, italic: bool = False) -> QTextCharForma
     return f
 
 
-C_KW_COL, C_BI, C_STR, C_COM, C_NUM, C_DEC, C_TAG, C_ATTR = "#ffd060", "#ff9a00", "#ffe08a", "#8a5a00", "#ffc933", "#cc8a00", "#ffd060", "#ff9a00"
+# tema HP 9845C: parole chiave ciano, stringhe gialle, commenti verdi, numeri magenta, builtin/attributi bianchi
+C_KW_COL, C_BI, C_STR, C_COM, C_NUM, C_DEC, C_TAG, C_ATTR = "#00FFFF", "#FFFFFF", "#FFFF00", "#00FF00", "#FF00FF", "#FF0000", "#00FFFF", "#FFFFFF"
 
 
 class Highlighter(QSyntaxHighlighter):
@@ -87,7 +88,7 @@ class Highlighter(QSyntaxHighlighter):
             self.rules.append((R(r"\b(" + "|".join(d["bi"]) + r")\b"), _fmt(C_BI)))
         if d.get("deco"):
             self.rules.append((R(r"^\s*@[\w.]+"), _fmt(C_DEC)))
-            self.rules.append((R(r"\b(?:def|class)\s+(\w+)"), _fmt("#ffd23f", bold=True)))
+            self.rules.append((R(r"\b(?:def|class)\s+(\w+)"), _fmt("#FFFF00", bold=True)))
         if d.get("markup"):
             self.rules.append((R(r"</?[\w:.-]+|/?>"), _fmt(C_TAG)))
             self.rules.append((R(r"\b[\w:-]+(?==)"), _fmt(C_ATTR)))
@@ -184,9 +185,11 @@ class _Gutter(QWidget):
 
 def mono_font(size: int = 11) -> QFont:
     f = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
-    for fam in ("Cascadia Mono", "Consolas", "JetBrains Mono", "DejaVu Sans Mono"):
+    for fam in ("VT323", "Cascadia Mono", "Consolas", "JetBrains Mono", "DejaVu Sans Mono"):
         if fam in QFontDatabase.families():
             f.setFamily(fam)
+            if fam == "VT323":
+                size = int(round(size * 1.55))      # VT323 ha il corpo piccolo
             break
     f.setPointSize(size)
     f.setStyleHint(QFont.StyleHint.Monospace)
@@ -326,7 +329,7 @@ class CodeEditor(QPlainTextEdit):
                             out = []
                             for pp in (p, q):
                                 s = QTextEdit.ExtraSelection()
-                                s.format.setBackground(QColor(255, 138, 31, 90))
+                                s.format.setBackground(QColor(255, 255, 0, 90))
                                 s.cursor = QTextCursor(doc)
                                 s.cursor.setPosition(pp)
                                 s.cursor.setPosition(pp + 1, QTextCursor.MoveMode.KeepAnchor)

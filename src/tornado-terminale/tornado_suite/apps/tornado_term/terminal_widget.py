@@ -21,8 +21,8 @@ DEFAULT_FG = QColor(P.text)
 DEFAULT_BG = QColor(P.canvas)
 
 _BASE = ["black", "red", "green", "brown", "blue", "magenta", "cyan", "white"]
-_NORMAL = ["#000000", "#cd0000", "#00cd00", "#cdcd00", "#3b3bff", "#cd00cd", "#00cdcd", "#e5e5e5"]
-_BRIGHT = ["#7f7f7f", "#ff0000", "#00ff00", "#ffff00", "#6c6cff", "#ff00ff", "#00ffff", "#ffffff"]
+_NORMAL = ["#000000", "#FF0000", "#00FF00", "#FFFF00", "#1010FF", "#FF00FF", "#00FFFF", "#FFFFFF"]
+_BRIGHT = ["#1010FF", "#FF0000", "#00FF00", "#FFFF00", "#1010FF", "#FF00FF", "#00FFFF", "#FFFFFF"]
 
 PALETTE: dict[str, QColor] = {}
 for _n, _a, _b in zip(_BASE, _NORMAL, _BRIGHT):
@@ -128,7 +128,7 @@ class TerminalWidget(QAbstractScrollArea):
 
         self._font = QFont()
         self._set_font_family()
-        self._font_pt = 14
+        self._font_pt = 17
         self._apply_font()
 
         self._new_screen(cols, rows)

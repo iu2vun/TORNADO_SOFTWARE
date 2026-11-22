@@ -134,7 +134,7 @@ class CalibrationDialog(QWidget):
         self.status_lbl = QLabel("")
         self.status_lbl.setWordWrap(True)
         self.status_lbl.setStyleSheet(
-            "color:#6fbf73; font-size:11px; font-family:Consolas,monospace;")
+            "color:#00FF00; font-size:11px; font-family:Consolas,monospace;")
         lay.addWidget(self.status_lbl)
         worker.status.connect(self._on_status)
 

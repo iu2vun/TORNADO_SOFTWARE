@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (
 
 from . import sysmon
 
-PALETTE = ["#4fc3f7", "#ef5350", "#66bb6a", "#ffa726", "#ab47bc", "#26c6da", "#d4e157", "#8d6e63"]
+PALETTE = ["#00FFFF", "#FF0000", "#00FF00", "#FFFF00", "#FF00FF", "#00FFFF", "#FFFF00", "#FF0000"]
 EMPTY = np.array([], dtype=float)
 ALARM_DEFS = [  # chiave, etichetta, unita', soglia predefinita (0 = disattivata)
     ("cpu.temp", "Temperatura CPU", "°C", 90.0),
@@ -203,7 +203,7 @@ class BarPlot(pg.PlotWidget):
         self.setLabel("left", "%")
         self.getAxis("left").setWidth(54)
         self.setMinimumHeight(170)
-        self.bars = pg.BarGraphItem(x=[0], height=[0], width=0.7, brush="#4fc3f7")
+        self.bars = pg.BarGraphItem(x=[0], height=[0], width=0.7, brush="#00FFFF")
         self.addItem(self.bars)
         self.restyle()
 
@@ -214,7 +214,7 @@ class BarPlot(pg.PlotWidget):
         n = len(cores)
         if not n:
             return
-        brushes = [pg.mkBrush("#66bb6a" if c < 50 else "#ffa726" if c < 80 else "#ef5350")
+        brushes = [pg.mkBrush("#00FF00" if c < 50 else "#FFFF00" if c < 80 else "#FF0000")
                    for c in cores]
         self.bars.setOpts(x=np.arange(n), height=np.array(cores, dtype=float), width=0.7,
                           brushes=brushes)
@@ -229,10 +229,10 @@ class Card(QFrame):
         lay.setContentsMargins(10, 6, 10, 6)
         lay.setSpacing(0)
         self.t = QLabel(title)
-        self.t.setStyleSheet("color: gray; font-size: 11px;")
+        self.t.setStyleSheet("color: #00FFFF; font-size: 17px;")
         self.v = QLabel("n/d")
         f = self.v.font()
-        f.setPointSize(16)
+        f.setPointSize(22)
         f.setBold(True)
         self.v.setFont(f)
         lay.addWidget(self.t)
@@ -240,7 +240,7 @@ class Card(QFrame):
 
     def set(self, text: str, level: int = 0) -> None:
         self.v.setText(text)
-        self.v.setStyleSheet({0: "", 1: "color:#e6a01e;", 2: "color:#e15050;"}[level])
+        self.v.setStyleSheet({0: "", 1: "color:#FFFF00;", 2: "color:#FF0000;"}[level])
 
 
 def plot_grid(specs: list, columns: int = 2):
@@ -484,7 +484,7 @@ class GpuPage(QWidget):
                      f"Ventola {g['fan']:.0f} %" if g.get("fan") is not None else None]
             txt = "  |  ".join(p for p in parts if p)
             if g.get("throttle"):
-                txt += f"<br><span style='color:#e6a01e'>Limitazione attiva: {g['throttle']}</span>"
+                txt += f"<br><span style='color:#FFFF00'>Limitazione attiva: {g['throttle']}</span>"
             info.setText(txt or "nessun dato (sensori non disponibili per questa GPU)")
             for p in plots:
                 p.refresh(w.hist, w.window_s)
@@ -747,7 +747,7 @@ class SystemMonitorWidget(QWidget):
         for b in (self.btn_pause, self.btn_csv, btn_al):
             bar.addWidget(b)
         self.alarm_lbl = QLabel("")
-        self.alarm_lbl.setStyleSheet("color:#e15050; font-weight:bold;")
+        self.alarm_lbl.setStyleSheet("color:#FF0000; font-weight:bold;")
         bar.addWidget(self.alarm_lbl, 1)
         self.status_lbl = QLabel("avvio...")
         bar.addWidget(self.status_lbl)

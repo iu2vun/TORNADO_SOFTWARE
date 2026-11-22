@@ -450,7 +450,7 @@ class _HistChart(QWidget):
             p.setPen(QPen(QColor(P.border), 1, Qt.PenStyle.DotLine))
             p.drawLine(int(r.left()), int(y), int(r.right()), int(y))
         n = len(self.items)
-        for attr, col, name in (("flash_pct", P.accent, "Flash"), ("ram_pct", "#5aa9ff", "RAM")):
+        for attr, col, name in (("flash_pct", P.accent, "Flash"), ("ram_pct", "#00FFFF", "RAM")):
             pts = [(r.left() + (i / max(1, n - 1)) * r.width() if n > 1 else r.center().x(), r.bottom() - min(getattr(s, attr), top) / top * r.height()) for i, s in enumerate(self.items)]
             p.setPen(QPen(QColor(col), 1.6))
             for a, b in zip(pts, pts[1:]):

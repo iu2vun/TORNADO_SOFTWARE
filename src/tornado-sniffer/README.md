@@ -1,5 +1,5 @@
 # Tornado Serial Sniffer
-Programma indipendente ricavato dalla Tornado Suite (stesso codice, stessa interfaccia nero/arancione). Cartella autonoma:
+Programma indipendente ricavato dalla Tornado Suite (stesso codice, stessa interfaccia, tema HP 9845C (schermo nero, 8 colori puri, effetto CRT)). Cartella autonoma:
 tutto il necessario e il `build.bat` per l'eseguibile.
 
 ## Uso

@@ -109,7 +109,7 @@ class AnalysisPanel(QWidget):
         self.out = QTextEdit()
         self.out.setReadOnly(True)
         self.out.setMinimumHeight(190)
-        self.out.setStyleSheet("font-family: Consolas, monospace; font-size: 12px;")
+        self.out.setStyleSheet("font-family: VT323, monospace; font-size: 19px;")
         lay.addWidget(self.out, 1)
         ws.changed.connect(self._fill_traces)
         self._fill_traces()
@@ -166,9 +166,9 @@ class AnalysisPanel(QWidget):
         return e.net, key, kind, f[m], y[m]
 
     def _html(self, title: str, rows: list[tuple[str, str]]) -> None:
-        h = f"<b style='color:#ffd060'>{title}</b><br>"
+        h = f"<b style='color:#FFFF00'>{title}</b><br>"
         h += "<table cellspacing=2>" + "".join(
-            f"<tr><td style='color:#8a92a0'>{a}</td><td>&nbsp;{b}</td></tr>" for a, b in rows) + "</table>"
+            f"<tr><td style='color:#FFFFFF'>{a}</td><td>&nbsp;{b}</td></tr>" for a, b in rows) + "</table>"
         self.out.setHtml(h)
 
     # --------------------------------------------------------- banda

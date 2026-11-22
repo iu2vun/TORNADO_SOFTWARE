@@ -23,7 +23,7 @@
       "label": "Installer Windows",
       "file": "TornadoShell-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": "ffe6d95f0640b0e1fa6140ab79fe5a4211bf17b6eaa67a1c77ccab1a43e9d0c3"
+      "sha256": "9520adb8192c3d60c925daf8e2f032b7498bed60500f10531af25debb6b0f458"
     },
     {
       "label": "Manuale PDF",
@@ -35,12 +35,11 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornado-shell-sorgenti-0.1.0.zip",
       "platform": "Python",
-      "sha256": "49379a661ca704e7fdbfb701c7fbfad3bfca339df19ae17248808c191c224318"
+      "sha256": "dc73ab8f7b7c3223adc4872c183f716e67c1a0eb99ab47e9d2cdff78bee750ad"
     }
   ],
   "screenshots": [
-    "img/01_finestra.png",
-    "img/02_uso.png"
+    "img/01_shell.png"
   ],
   "changelog": [
     {

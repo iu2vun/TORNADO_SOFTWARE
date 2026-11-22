@@ -30,13 +30,13 @@
       "label": "Installer Windows",
       "file": "TornadoUSBTree-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": "77f89a488c6e3ef444120d337b1c58f4b322159d4fd6610a7eea17bd7d15af14"
+      "sha256": "4c5ab44424367ec9307e7fa0e1d8af90fd60da216875fd23f7b1ae2d3f730d94"
     },
     {
       "label": "Sorgenti Python (zip)",
       "file": "tornado-usbtree-sorgenti-0.1.0.zip",
       "platform": "Python",
-      "sha256": "0faf9c7a7aeabca2a840cff21bed6b21b8b8b23a81779b08a0fc08e578324bc5"
+      "sha256": "7cb655b1d1d60355d630aee25c140b82cb21c0dff2126d73cb65509f435202a6"
     }
   ],
   "screenshots": [],

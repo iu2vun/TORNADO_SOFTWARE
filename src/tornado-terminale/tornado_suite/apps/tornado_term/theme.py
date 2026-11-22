@@ -1,18 +1,18 @@
 """Tema scuro dell'applicazione, coordinato coi colori del terminale.
 
 Un solo foglio di stile QSS applicato a livello di QApplication. I colori
-richiamano lo sfondo del terminale (#101010) per continuita' visiva tra
+richiamano lo sfondo del terminale (#000000) per continuita' visiva tra
 cornice e area di rendering.
 """
 
-BG = "#141414"
-BG_RAISED = "#1e1e1e"
-BG_INPUT = "#0d0d0d"
-BORDER = "#2a2a2a"
-FG = "#d8d8d8"
-FG_DIM = "#8a8a8a"
-ACCENT = "#19cb00"
-ACCENT_DIM = "#127e00"
+BG = "#000000"
+BG_RAISED = "#000000"
+BG_INPUT = "#000000"
+BORDER = "#000000"
+FG = "#FFFFFF"
+FG_DIM = "#FFFFFF"
+ACCENT = "#00FF00"
+ACCENT_DIM = "#00FF00"
 
 APP_STYLESHEET = f"""
 QMainWindow, QWidget {{
@@ -67,7 +67,7 @@ QPushButton:pressed {{ background: {BG}; }}
 QPushButton#connectBtn[connected="true"] {{
     background: {ACCENT_DIM};
     border-color: {ACCENT};
-    color: #ffffff;
+    color: #FFFFFF;
 }}
 
 QStatusBar {{

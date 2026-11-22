@@ -15,11 +15,11 @@ from .const import TRACE_COLORS
 from .measure import default_format, meas_label
 
 # palette per trace oltre gli S-parametri base
-_PALETTE = ["#ffd23f", "#5b8def", "#ff5555", "#5fe3a1", "#b69cff", "#e8e8e8", "#c98a4b", "#7fd6ff"]
+_PALETTE = ["#FFFF00", "#1010FF", "#FF0000", "#00FFFF", "#FF00FF", "#FFFFFF", "#FFFF00", "#00FFFF"]
 _color_cycle = itertools.cycle(_PALETTE)
 
 _trace_counter = itertools.count(1)
-_TRACE_SEQ = ["#ffb000", "#ffe08a", "#b87800", "#ff9a00", "#ffd060", "#8a5a00", "#ffc933", "#ffefb8"]
+_TRACE_SEQ = ["#FFFF00", "#00FFFF", "#FFFFFF", "#00FF00", "#FF00FF", "#FF0000", "#FFFF00", "#00FFFF"]
 
 
 # scala predefinita per formato: (ref, div, divisioni sopra ref, divisioni sotto ref)

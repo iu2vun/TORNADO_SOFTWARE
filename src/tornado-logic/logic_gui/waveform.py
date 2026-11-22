@@ -150,8 +150,8 @@ class WaveformView(pg.PlotWidget):
 
         self._ca = pg.InfiniteLine(pos=0, angle=90, movable=True, pen=pg.mkPen(P.accent, width=1.4),
                                    label="A", labelOpts={"position": 0.97, "color": P.accent})
-        self._cb = pg.InfiniteLine(pos=0, angle=90, movable=True, pen=pg.mkPen("#ffffff", width=1.4),
-                                   label="B", labelOpts={"position": 0.91, "color": "#ffffff"})
+        self._cb = pg.InfiniteLine(pos=0, angle=90, movable=True, pen=pg.mkPen("#FFFFFF", width=1.4),
+                                   label="B", labelOpts={"position": 0.91, "color": "#FFFFFF"})
         for c in (self._ca, self._cb):
             c.setZValue(30)
             self._pi.addItem(c)

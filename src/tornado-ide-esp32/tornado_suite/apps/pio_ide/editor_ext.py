@@ -11,8 +11,8 @@ from ...core.theme import P
 from ...modules.editor import CodeEditor
 from . import symbols as sy
 
-BREAK_COLOR = "#ff4d4d"
-EXEC_COLOR = "#ffd23f"
+BREAK_COLOR = "#FF0000"
+EXEC_COLOR = "#FFFF00"
 
 
 class PioEditorBase(CodeEditor):

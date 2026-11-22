@@ -108,7 +108,7 @@ class MainWindow(QMainWindow):
         self.echo_check.setChecked(echo)
         bs = s.value("opt/backspace_del", True, type=bool)
         self.bs_check.setChecked(bs)
-        font = s.value("view/font", 11, type=int)
+        font = s.value("view/font_hp", 17, type=int)
         self.term.font_size = font
 
     def _save_settings(self) -> None:
@@ -124,7 +124,7 @@ class MainWindow(QMainWindow):
         s.setValue("opt/enc", self.enc_combo.currentText())
         s.setValue("opt/echo", self.echo_check.isChecked())
         s.setValue("opt/backspace_del", self.bs_check.isChecked())
-        s.setValue("view/font", self.term.font_size)
+        s.setValue("view/font_hp", self.term.font_size)
 
     # ---- costruzione UI -------------------------------------------------
 

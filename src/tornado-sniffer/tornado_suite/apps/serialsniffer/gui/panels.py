@@ -192,7 +192,7 @@ class SendPanel(QWidget):
             self.lbl_prev.setStyleSheet("")
             self.lbl_prev.setText(f"→ {len(data)} byte: {render(data[:48], 'hex')}{' …' if len(data) > 48 else ''}")
         except ValueError as exc:
-            self.lbl_prev.setStyleSheet("color: #d9822b;")
+            self.lbl_prev.setStyleSheet("color: #FFFF00;")
             self.lbl_prev.setText(f"⚠ {exc}")
 
     def send_now(self) -> None:

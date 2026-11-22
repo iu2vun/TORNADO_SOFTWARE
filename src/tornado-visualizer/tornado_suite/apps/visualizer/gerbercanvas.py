@@ -6,9 +6,9 @@ from PySide6.QtGui import QColor, QPainter, QPolygonF
 
 from .canvas import Canvas
 
-ROLE_COL = {"top": "#ff5a36", "bottom": "#3d8bff", "inner": "#7acb54", "mask_t": "#2fa84f", "mask_b": "#2fa84f",
-            "silk_t": "#ffd060", "silk_b": "#c9a24a", "paste_t": "#9a9a9a", "paste_b": "#9a9a9a",
-            "outline": "#e8e8e8", "drill": "#ffffff", "other": "#ffb000"}
+ROLE_COL = {"top": "#FF0000", "bottom": "#00FFFF", "inner": "#00FF00", "mask_t": "#00FF00", "mask_b": "#00FF00",
+            "silk_t": "#FFFF00", "silk_b": "#FFFF00", "paste_t": "#FFFFFF", "paste_b": "#FFFFFF",
+            "outline": "#FFFFFF", "drill": "#FFFFFF", "other": "#FFFFFF"}
 ORDER = ["bottom", "paste_b", "silk_b", "mask_b", "inner", "top", "mask_t", "paste_t", "silk_t", "outline", "drill", "other"]
 DEFAULT_OFF = {"mask_t", "mask_b", "paste_t", "paste_b"}
 EXTS = (".gbr", ".gtl", ".gbl", ".gts", ".gbs", ".gto", ".gbo", ".gtp", ".gbp", ".gm1", ".gko", ".gml", ".drl", ".xln", ".exc",

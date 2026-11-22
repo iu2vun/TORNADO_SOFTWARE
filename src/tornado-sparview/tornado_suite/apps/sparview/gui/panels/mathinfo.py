@@ -201,10 +201,10 @@ class InfoPanel(QWidget):
     def refresh(self) -> None:
         e = self.ws.current_entry()
         if e is None:
-            self.view.setHtml("<p style='color:#8a92a0'>Apri un file S-parametri (File → Apri, o trascinalo qui).</p>")
+            self.view.setHtml("<p style='color:#FFFFFF'>Apri un file S-parametri (File → Apri, o trascinalo qui).</p>")
             return
         n = e.net
-        row = lambda a, b: f"<tr><td style='color:#8a92a0'>{a}</td><td>&nbsp;&nbsp;{b}</td></tr>"
+        row = lambda a, b: f"<tr><td style='color:#FFFFFF'>{a}</td><td>&nbsp;&nbsp;{b}</td></tr>"
         rows = [row("Nome", html.escape(n.name)), row("Formato", html.escape(n.source_format or "—")),
                 row("File", html.escape(n.path) if n.path else "—"), row("Porte", n.nports),
                 row("Punti", n.nfreq), row("Banda", f"{fmt_eng(n.fmin, 'Hz', 6)} – {fmt_eng(n.fmax, 'Hz', 6)}"),
@@ -217,14 +217,14 @@ class InfoPanel(QWidget):
             p = ops.passivity_report(n)
             r = ops.reciprocity_report(n)
             rows.append(row("σmax(S)", f"{p['max_sv']:.4f} — " + ("passiva" if p["passive"] else
-                                                                 "<span style='color:#ff6b6b'>NON passiva</span>")))
+                                                                 "<span style='color:#FF0000'>NON passiva</span>")))
             rows.append(row("Reciprocità", "sì" if r["reciprocal"] else f"no (max {r['max_dev']:.2g})"))
         except Exception:  # noqa: BLE001
             pass
         if n.noise is not None:
             rows.append(row("Rumore", "dati presenti"))
-        h = "<h3 style='color:#ffd060'>%s</h3><table>%s</table>" % (html.escape(n.name), "".join(rows))
+        h = "<h3 style='color:#FFFF00'>%s</h3><table>%s</table>" % (html.escape(n.name), "".join(rows))
         if n.comments:
-            h += "<h4 style='color:#ffd060'>Commenti</h4><pre style='font-size:11px'>%s</pre>" % html.escape(
+            h += "<h4 style='color:#FFFF00'>Commenti</h4><pre style='font-size:11px'>%s</pre>" % html.escape(
                 "\n".join(n.comments[:80]))
         self.view.setHtml(h)

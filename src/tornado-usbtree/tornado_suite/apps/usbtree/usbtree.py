@@ -61,27 +61,13 @@ class DeviceChangeFilter(QAbstractNativeEventFilter):
 
 
 def apply_theme(dark: bool) -> None:
-    app = QApplication.instance()
-    app.setStyle("Fusion")
-    if not dark:
-        app.setPalette(app.style().standardPalette())
-        return
-    p = QPalette()
-    for role, col in (
-        (QPalette.Window, "#2b2b2b"), (QPalette.WindowText, "#e0e0e0"),
-        (QPalette.Base, "#1e1e1e"), (QPalette.AlternateBase, "#262626"),
-        (QPalette.Text, "#e0e0e0"), (QPalette.Button, "#353535"),
-        (QPalette.ButtonText, "#e0e0e0"), (QPalette.ToolTipBase, "#353535"),
-        (QPalette.ToolTipText, "#e0e0e0"), (QPalette.Highlight, "#2f6fbd"),
-        (QPalette.HighlightedText, "#ffffff"), (QPalette.PlaceholderText, "#808080"),
-    ):
-        p.setColor(role, QColor(col))
-    app.setPalette(p)
+    """Il tema (HP 9845C) lo applica la suite: qui nessuna tavolozza propria."""
+    return
 
 
 def level_color(level: str) -> QColor | None:
-    return {"error": QColor(225, 80, 80), "warn": QColor(230, 160, 30),
-            "empty": QColor(135, 135, 135)}.get(level)
+    return {"error": QColor("#FF0000"), "warn": QColor("#FFFF00"),
+            "empty": QColor("#1010FF")}.get(level)
 
 
 def node_text(n: Node, ind: int = 0) -> str:
@@ -99,7 +85,7 @@ def node_text(n: Node, ind: int = 0) -> str:
 
 
 def node_html(n: Node) -> str:
-    col = {"error": "#c0392b", "warn": "#d68910", "empty": "#888"}.get(n.level, "inherit")
+    col = {"error": "#FF0000", "warn": "#FFFF00", "empty": "#1010FF"}.get(n.level, "inherit")
     rows = "".join(f"<tr><td>{html.escape(k)}</td><td>{html.escape(v)}</td></tr>" for k, v in n.props)
     warns = "".join(f"<div class=w>&#9888; {html.escape(w)}</div>" for w in n.warnings)
     desc = f"<pre>{html.escape(n.descriptors)}</pre>" if n.descriptors else ""
@@ -145,7 +131,7 @@ class MainWindow(QMainWindow):
         copy.triggered.connect(lambda: self._copy_rows(False))
         self.table.addAction(copy)
 
-        mono = QFont("Consolas", 10)
+        mono = QFont("VT323", 15)
         self.desc_view = QPlainTextEdit(readOnly=True)
         self.desc_view.setFont(mono)
         self.desc_view.setLineWrapMode(QPlainTextEdit.NoWrap)
@@ -219,7 +205,6 @@ class MainWindow(QMainWindow):
         self.act_dark = QAction("Tema scuro", self, checkable=True)
         self.act_dark.setChecked(self.settings.value("dark", True, bool))
         self.act_dark.toggled.connect(self._toggle_dark)
-        v.addAction(self.act_dark)
         t = self.menuBar().addMenu("&Strumenti")
         t.addAction("Aggiorna database usb.ids", self.update_ids)
         t.addAction("Cancella log", self.log_view.clear)
@@ -481,7 +466,7 @@ class MainWindow(QMainWindow):
         dlg.setWindowTitle("Confronto snapshot")
         dlg.resize(800, 500)
         view = QPlainTextEdit(readOnly=True)
-        view.setFont(QFont("Consolas", 10))
+        view.setFont(QFont("VT323", 15))
         view.setPlainText("\n".join(lines) or "Nessuna differenza.")
         lay = QVBoxLayout(dlg)
         lay.addWidget(view)

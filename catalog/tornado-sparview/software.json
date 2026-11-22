@@ -26,7 +26,7 @@
       "label": "Installer Windows",
       "file": "TornadoSParView-Setup-0.1.0.exe",
       "platform": "Windows",
-      "sha256": "23da1547805e9bd1830cefc5363b30cc76374e73298c47708f4649918aae7337"
+      "sha256": "129837d11681f13529cb8fb1cf0517aaf8b652829716202c372c782b981a8962"
     },
     {
       "label": "Manuale PDF",
@@ -38,7 +38,7 @@
       "label": "Sorgenti Python (zip)",
       "file": "tornado-sparview-sorgenti-0.1.0.zip",
       "platform": "Python",
-      "sha256": "128f7c3ccbd14ede3987a17f2ffa50929e3f52efef2e9656101f17d49dac7324"
+      "sha256": "d4c7183d05f3ef729e456bb8c4a8b23b18097ba6cfbb34dd51be2ac29f0fa2fe"
     }
   ],
   "screenshots": [

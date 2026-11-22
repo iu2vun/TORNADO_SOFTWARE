@@ -192,17 +192,6 @@ class MainWindow(QMainWindow):
         self.menu_tiles.addSeparator()
         for d in (self.dock_channels, self.dock_send, self.dock_replay):
             self.menu_tiles.addAction(d.toggleViewAction())
-        self.menu_tiles.addSeparator()
-        theme_menu = self.menu_tiles.addMenu("Tema")
-        group = QActionGroup(self)
-        current = str(self.settings.value("theme", "system"))
-        for label, key in (("Sistema", "system"), ("Chiaro", "light"), ("Scuro", "dark")):
-            a = QAction(label, self, checkable=True)
-            a.setData(key)
-            a.setChecked(key == current)
-            a.triggered.connect(lambda _=False, k=key: self.set_theme(k))
-            group.addAction(a)
-            theme_menu.addAction(a)
         mb.addMenu("&?").addAction(self.act_about)
 
     def _build_toolbar(self) -> None:
@@ -303,8 +292,8 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Decoder caricati: " + ", ".join(added), 8000)
 
     def set_theme(self, mode: str) -> None:
-        self.settings.setValue("theme", mode)
-        apply_theme(QApplication.instance(), mode)
+        """Il tema e' unico (HP 9845C, applicato dalla suite): nessuna scelta."""
+        return
 
     # ==================================================================== mosaico
     def add_tile(self, kind: str, state: Optional[dict] = None, name: Optional[str] = None,

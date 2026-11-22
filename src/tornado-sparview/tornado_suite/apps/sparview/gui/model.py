@@ -265,7 +265,7 @@ class Workspace(QObject):
                 continue
             for (i, j) in sorted(e.cells):
                 lab = e.net.label(i, j)
-                out.append(TraceRef(e.net, i, j, e.colors.get((i, j), "#ffffff"),
+                out.append(TraceRef(e.net, i, j, e.colors.get((i, j), "#FFFFFF"),
                                     f"{e.net.name}: {lab}" if many else lab,
                                     (e.net.uid, i, j), self.trace_width))
         return out

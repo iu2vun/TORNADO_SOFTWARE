@@ -141,7 +141,7 @@ class TimePlot(RectPlot):
 
     def draw_overlay(self, p: QPainter, plot: QRectF, xr, yr, th: Theme, interactive: bool) -> None:
         if self.error:
-            p.setPen(qcolor("#ff6b6b"))
+            p.setPen(qcolor("#FF0000"))
             p.setFont(D.font(11))
             p.drawText(QPointF(plot.left() + 10, plot.bottom() - 10), self.error)
         if not self.ts.gate_show:

@@ -43,7 +43,7 @@ class Overlay(QLabel):
         p = QPainter(self)
         p.setRenderHint(QPainter.Antialiasing)
         p.setPen(QPen(qcolor(P.border)))
-        p.setBrush(qcolor("rgba(23,26,31,225)"))
+        p.setBrush(qcolor("rgba(0,0,0,225)"))
         p.drawRoundedRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 5, 5)
         p.end()
         super().paintEvent(e)
