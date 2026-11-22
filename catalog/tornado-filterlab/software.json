@@ -24,6 +24,12 @@
   "requirements": "Windows 10/11 a 64 bit. La verifica full-wave richiede openEMS (opzionale, non incluso).",
   "downloads": [
     {
+      "label": "Installer Windows",
+      "file": "FilterLab-Setup-1.0.0.exe",
+      "platform": "Windows",
+      "sha256": "73583e048cf257efeb94571e61624ec2a285fd4462a04161f6c444cb0b085511"
+    },
+    {
       "label": "Codice sorgente su GitHub",
       "url": "https://github.com/iu2vun/FilterLab",
       "platform": "Python"
