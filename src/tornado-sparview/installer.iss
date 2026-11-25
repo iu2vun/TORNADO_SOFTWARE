@@ -1,7 +1,7 @@
 ; Inno Setup 6 - installer di Tornado SParView (compilato da build.bat se Inno Setup e' installato)
 #define AppName "Tornado SParView"
 #define AppExe "TornadoSParView.exe"
-#define AppVer "0.1.0"
+#define AppVer "0.1.1"
 [Setup]
 AppId={{5E92B7D3-1A4C-4F08-B6E5-C83D0A9F2714}
 AppName={#AppName}

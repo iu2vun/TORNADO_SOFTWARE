@@ -14,10 +14,28 @@ from ..model import Workspace
 from ..theme import DARK, LIGHT, Theme, qcolor
 from . import draw as D
 from .base import PlotView
-from .rect import to_polygon
+from .rect import runs_of_valid, to_polygon
 from .ticks import nice_step
 
-MAX_POINTS = 4000
+MIN_FIT_HALF = 0.05        # semi-lato minimo della vista automatica (zoom massimo sulla traccia)
+ZOOM_TRACE_BELOW = 0.4     # Smith: sotto questo |Γ| massimo la vista si stringe sulla traccia
+DECIMATE_MIN = 400         # sopra questo numero di punti per tratto si decima in pixel
+DECIMATE_STEP = 0.8        # passo (px lungo il percorso) della decimazione
+MAX_VERTS = 6000           # tetto di vertici per tratto a piena qualità
+MAX_VERTS_FAST = 1500      # ... durante pan/zoom
+
+
+def decimate_path(px: np.ndarray, py: np.ndarray, step: float = DECIMATE_STEP):
+    """Toglie i punti che distano meno di `step` pixel lungo il percorso: stessa forma, molti meno vertici."""
+    if px.size <= DECIMATE_MIN:
+        return px, py
+    cum = np.concatenate(([0.0], np.cumsum(np.hypot(np.diff(px), np.diff(py)))))
+    b = np.floor(cum / step).astype(np.int64)
+    keep = np.empty(px.size, dtype=bool)
+    keep[0] = True
+    keep[1:] = b[1:] != b[:-1]
+    keep[-1] = True
+    return px[keep], py[keep]
 
 
 class ComplexPlot(PlotView):
@@ -36,11 +54,15 @@ class ComplexPlot(PlotView):
         self._press_mods = Qt.KeyboardModifier.NoModifier
         self._moved = False
         self._traces = None
+        self._bbox = None
+        self._poly_cache: dict = {}
         self.setCursor(Qt.CursorShape.CrossCursor)
 
     # ---------------------------------------------------------------- dati
     def invalidate(self) -> None:
         self._traces = None
+        self._bbox = None
+        self._poly_cache.clear()
 
     def traces(self):
         if self._traces is None:
@@ -49,29 +71,53 @@ class ComplexPlot(PlotView):
 
     def fit(self) -> None:
         self.auto = True
-        self.center = (0.0, 0.0)
-        self.half = self.auto_half()
         self.viewChanged.emit()
         self.update()
 
+    def _bounds(self) -> tuple:
+        """(re_min, re_max, im_min, im_max, |max|) su tutte le tracce visibili; in cache fino a invalidate()."""
+        if self._bbox is None:
+            b = None
+            for t in self.traces():
+                v = t.values
+                v = v[np.isfinite(v)]
+                if not v.size:
+                    continue
+                r = (float(v.real.min()), float(v.real.max()), float(v.imag.min()), float(v.imag.max()),
+                     float(np.abs(v).max()))
+                b = r if b is None else (min(b[0], r[0]), max(b[1], r[1]), min(b[2], r[2]),
+                                         max(b[3], r[3]), max(b[4], r[4]))
+            self._bbox = b or (0.0, 0.0, 0.0, 0.0, 0.0)
+        return self._bbox
+
     def auto_half(self) -> float:
-        m = 0.0
-        for t in self.traces():
-            v = t.values
-            v = v[np.isfinite(v)]
-            if v.size:
-                m = max(m, float(np.abs(v).max()))
-        return self._half_for(m)
+        return self._half_for(self._bounds()[4])
 
     def _half_for(self, maxabs: float) -> float:
         return max(1.12, maxabs * 1.08)
+
+    def _auto_view(self, plot: QRectF) -> tuple:
+        """((cx, cy), half) della vista automatica: centrata sull'origine, adattata al modulo massimo."""
+        return (0.0, 0.0), self.auto_half()
+
+    @staticmethod
+    def _fit_region(plot: QRectF, r0: float, r1: float, i0: float, i1: float, margin: float = 1.08,
+                    min_half: float = MIN_FIT_HALF) -> tuple:
+        """Vista che contiene il rettangolo [r0,r1]x[i0,i1] nel riquadro (qualsiasi proporzione)."""
+        hx = max((r1 - r0) / 2 * margin, 1e-9)
+        hy = max((i1 - i0) / 2 * margin, 1e-9)
+        w, h = max(plot.width(), 1.0), max(plot.height(), 1.0)
+        half = max(min(w, h) * max(hx / w, hy / h), min_half)
+        return ((r0 + r1) / 2, (i0 + i1) / 2), half
 
     # ------------------------------------------------------------ geometria
     def plot_rect(self, rect: QRectF) -> QRectF:
         return rect.adjusted(10, 10, -10, -10)
 
     def _tf(self, plot: QRectF):
-        half = self.half if not self.auto else self.auto_half()
+        if self.auto:
+            self.center, self.half = self._auto_view(plot)
+        half = self.half
         side = min(plot.width(), plot.height())
         scale = side / (2 * half)
         return half, scale, plot.center().x(), plot.center().y()
@@ -92,7 +138,7 @@ class ComplexPlot(PlotView):
     def readout_lines(self, th) -> list[tuple[str, str]]:
         raise NotImplementedError
 
-    def draw(self, p: QPainter, rect: QRectF, th: Theme, interactive: bool = True) -> None:
+    def draw_static(self, p: QPainter, rect: QRectF, th: Theme, interactive: bool = True) -> None:
         p.save()
         p.fillRect(rect, qcolor(th.bg))
         plot = self.plot_rect(rect)
@@ -102,10 +148,7 @@ class ComplexPlot(PlotView):
         self.draw_grid(p, plot, th)
         traces = self.traces()
         for t in traces:
-            self._draw_trace(p, t, plot)
-        self._draw_markers(p, plot, th)
-        if interactive and self._hover is not None and plot.contains(self._hover):
-            pass
+            self._draw_trace(p, t, plot, th)
         p.restore()
         p.setPen(QPen(qcolor(th.axis), 1))
         p.setBrush(Qt.BrushStyle.NoBrush)
@@ -114,41 +157,78 @@ class ComplexPlot(PlotView):
             p.setPen(qcolor(th.text_dim))
             p.setFont(D.font(13))
             p.drawText(plot, Qt.AlignmentFlag.AlignCenter, "Nessuna traccia")
+        p.restore()
+
+    def draw_dynamic(self, p: QPainter, rect: QRectF, th: Theme, interactive: bool = True) -> None:
+        plot = self.plot_rect(rect)
+        traces = self.traces()
+        p.save()
+        p.setClipRect(plot)
+        self._draw_markers(p, plot, th)
+        p.restore()
         if self.show_legend and traces:
             D.draw_legend(p, plot, [(t.color, t.label) for t in traces], th,
                           avoid=D.readouts_rect(plot, self.readout_lines(th)))
         D.draw_readouts(p, plot, self.readout_lines(th), th)
-        p.restore()
 
-    def _draw_trace(self, p: QPainter, t, plot: QRectF) -> None:
+    def _trace_polys(self, t, plot: QRectF):
+        """Poligoni in pixel della traccia (solo i tratti visibili, decimati), in cache per vista/dimensioni."""
+        fast = self._fast_render
+        key = (t.key, plot.width(), plot.height(), self.center, self.half, fast)
+        hit = self._poly_cache.get(key)
+        if hit is not None:
+            return hit
         z = t.values
-        n = z.size
-        if n > MAX_POINTS:
-            idx = np.linspace(0, n - 1, MAX_POINTS).astype(int)
-            z = z[idx]
         ok = np.isfinite(z)
-        if not ok.any():
+        polys: list[QPolygonF] = []
+        dots = None
+        first = None
+        if ok.any():
+            px, py = self.g2px(z, plot)
+            px, py = D.clamp_px(px), D.clamp_px(py)
+            ok = ok & np.isfinite(px) & np.isfinite(py)
+            first = (float(px[ok][0]), float(py[ok][0])) if ok.any() else None
+            if z.size <= 120:
+                dots = list(zip(px[ok].tolist(), py[ok].tolist()))
+            if px.size >= 2:
+                lo_x, hi_x, lo_y, hi_y = plot.left() - 4, plot.right() + 4, plot.top() - 4, plot.bottom() + 4
+                x0, x1, y0, y1 = px[:-1], px[1:], py[:-1], py[1:]
+                with np.errstate(invalid="ignore"):
+                    seg = ((np.maximum(x0, x1) >= lo_x) & (np.minimum(x0, x1) <= hi_x) &
+                           (np.maximum(y0, y1) >= lo_y) & (np.minimum(y0, y1) <= hi_y))
+                for a, b in runs_of_valid(seg):          # tratti di segmenti consecutivi che toccano il riquadro
+                    qx, qy = decimate_path(px[a:b + 1], py[a:b + 1])
+                    cap = MAX_VERTS_FAST if fast else MAX_VERTS
+                    if qx.size > cap:                      # traccia molto rumorosa: sottocampiona in modo uniforme
+                        k = np.linspace(0, qx.size - 1, cap).astype(np.int64)
+                        qx, qy = qx[k], qy[k]
+                    polys.append(to_polygon(qx, qy))
+        out = (polys, dots, first)
+        if len(self._poly_cache) > 48:
+            self._poly_cache.clear()
+        self._poly_cache[key] = out
+        return out
+
+    def _draw_trace(self, p: QPainter, t, plot: QRectF, th: Theme) -> None:
+        polys, dots, first = self._trace_polys(t, plot)
+        if first is None:
             return
-        px, py = self.g2px(z, plot)
-        px, py = D.clamp_px(px), D.clamp_px(py)
         pen = QPen(qcolor(t.color), t.width)
         pen.setCapStyle(Qt.PenCapStyle.RoundCap)
-        pen.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
+        pen.setJoinStyle(Qt.PenJoinStyle.BevelJoin)
         p.setPen(pen)
         p.setBrush(Qt.BrushStyle.NoBrush)
-        from .rect import runs_of_valid
-        for a, b in runs_of_valid(ok):
-            if b - a >= 2:
-                p.drawPolyline(to_polygon(px[a:b], py[a:b]))
-        if z.size <= 120:
+        for poly in polys:
+            if poly.size() >= 2:
+                p.drawPolyline(poly)
+        if dots:
             p.setBrush(qcolor(t.color))
-            for a, b in zip(px[ok][:200].tolist(), py[ok][:200].tolist()):
+            for a, b in dots:
                 p.drawEllipse(QPointF(a, b), 2.2, 2.2)
-        # inizio/fine traccia
+        # inizio traccia
         p.setBrush(qcolor(t.color))
-        p.setPen(QPen(qcolor(self.theme.text), 1))
-        first = np.flatnonzero(ok)[0]
-        p.drawRect(QRectF(px[first] - 3, py[first] - 3, 6, 6))
+        p.setPen(QPen(qcolor(th.text), 1))
+        p.drawRect(QRectF(first[0] - 3, first[1] - 3, 6, 6))
 
     def marker_point(self, key, freq: float) -> Optional[complex]:
         for t in self.traces():
@@ -279,7 +359,7 @@ class ComplexPlot(PlotView):
 
     def leaveEvent(self, ev) -> None:
         self._hover = None
-        self.update()
+        self.update_overlay()
 
     def wheelEvent(self, ev) -> None:
         plot = self.plot_rect(QRectF(0, 0, self.width(), self.height()))
@@ -348,6 +428,21 @@ class SmithPlot(ComplexPlot):
         super().__init__(workspace, theme, parent)
         self.admittance = False
 
+    def _auto_view(self, plot: QRectF) -> tuple:
+        """Vista adattata alla traccia (non solo al cerchio unitario).
+
+        - traccia piccola (|Γ| < 0.4): zoom sul suo riquadro, la griglia si infittisce;
+        - altrimenti: il riquadro delle tracce + il cerchio unitario, centrato sul loro baricentro
+          (S21 di un amplificatore con |S21| >> 1 riempie la finestra invece di restare microscopica).
+        """
+        r0, r1, i0, i1, mx = self._bounds()
+        if mx <= 0.0:
+            return (0.0, 0.0), 1.12
+        if mx < ZOOM_TRACE_BELOW:
+            return self._fit_region(plot, r0, r1, i0, i1, margin=1.25)
+        center, half = self._fit_region(plot, min(r0, -1.0), max(r1, 1.0), min(i0, -1.0), max(i1, 1.0))
+        return center, max(half, 1.12)
+
     def _r_levels(self, half: float) -> list[float]:
         if half >= 0.6:
             return [0.2, 0.5, 1.0, 2.0, 5.0]
@@ -366,6 +461,9 @@ class SmithPlot(ComplexPlot):
         R = scale
         circle = QPainterPath()
         circle.addEllipse(P(0, 0), R, R)
+        # griglia estesa solo se serve: tracce con |Γ| > 1 (S21 di un amplificatore...) o vista allargata a mano
+        if self._bounds()[4] > 1.0 or (not self.auto and self.half > 1.5):
+            self._draw_extended(p, plot, th, P, R, sgn, circle)
         p.save()
         p.setClipPath(circle, Qt.ClipOperation.IntersectClip)
         levels = self._r_levels(half)
@@ -417,6 +515,25 @@ class SmithPlot(ComplexPlot):
         p.setPen(qcolor(th.text_dim))
         p.setFont(D.font(11, bold=True))
         p.drawText(QPointF(plot.left() + 10, plot.bottom() - 10), "Carta Y" if self.admittance else "Carta Z")
+
+    def _draw_extended(self, p: QPainter, plot: QRectF, th: Theme, P, R: float, sgn: float,
+                       circle: QPainterPath) -> None:
+        """Griglia fuori dal cerchio unitario (|Γ| > 1, resistenza negativa), tratteggio tenue."""
+        outside = QPainterPath()
+        outside.addRect(plot)
+        outside = outside.subtracted(circle)
+        p.save()
+        p.setClipPath(outside, Qt.ClipOperation.IntersectClip)
+        p.setPen(QPen(qcolor(th.grid_minor), 1))
+        p.setBrush(Qt.BrushStyle.NoBrush)
+        for r in (-0.2, -0.5, -2.0, -5.0):                 # cerchi a r costante negativo
+            p.drawEllipse(P(sgn * r / (1 + r), 0), R / abs(1 + r), R / abs(1 + r))
+        xl = P(sgn * 1.0, 0).x()                           # r = -1: retta Re(Γ) = ±1
+        p.drawLine(QPointF(xl, plot.top() - 1), QPointF(xl, plot.bottom() + 1))
+        for x in (0.2, 0.5, 1.0, 2.0, 5.0):                # prosecuzione dei cerchi a x costante
+            for s_ in (1.0, -1.0):
+                p.drawEllipse(P(sgn * 1.0, sgn / (s_ * x)), R / x, R / x)
+        p.restore()
 
     def extra_menu(self, menu: QMenu) -> None:
         a = QAction("Carta Y (ammettenza)", menu)

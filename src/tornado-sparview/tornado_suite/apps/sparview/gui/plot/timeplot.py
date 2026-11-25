@@ -188,7 +188,7 @@ class TimePlot(RectPlot):
             else:
                 self.ts.gate_stop = max(t, self.ts.gate_start + 1e-12)
             self.ts.gateMoved.emit()
-            self.update()
+            self.update_overlay()
             return
         if self._gate_edge_at(ev.position()):
             self.setCursor(Qt.CursorShape.SizeHorCursor)

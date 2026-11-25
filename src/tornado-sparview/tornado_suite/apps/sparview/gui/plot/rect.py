@@ -30,8 +30,8 @@ class Series:
     dashed: bool = False
 
 
-def minmax_decimate(px: np.ndarray, py: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """Riduce a ~4 punti per colonna di pixel preservando l'inviluppo (picchi e notch)."""
+def minmax_decimate(px: np.ndarray, py: np.ndarray, fast: bool = False) -> tuple[np.ndarray, np.ndarray]:
+    """Riduce a ~4 punti per colonna di pixel preservando l'inviluppo (picchi e notch); 2 se `fast`."""
     b = np.floor(px - px[0]).astype(np.int64)
     starts = np.concatenate(([0], np.flatnonzero(np.diff(b)) + 1))
     ends = np.append(starts[1:], px.size)
@@ -44,6 +44,8 @@ def minmax_decimate(px: np.ndarray, py: np.ndarray) -> tuple[np.ndarray, np.ndar
     min_first = np.abs(first - ymin) <= np.abs(first - ymax)
     a = np.where(min_first, ymin, ymax)
     c = np.where(min_first, ymax, ymin)
+    if fast:
+        return np.repeat(xs, 2), np.column_stack((a, c)).ravel()
     ox = np.repeat(xs, 4)
     oy = np.column_stack((first, a, c, last)).ravel()
     return ox, oy
@@ -244,7 +246,7 @@ class RectPlot(PlotView):
         return yr[0] + (plot.bottom() - py) / plot.height() * (yr[1] - yr[0])
 
     # =========================================================== disegno
-    def draw(self, p: QPainter, rect: QRectF, th: Theme, interactive: bool = True) -> None:
+    def draw_static(self, p: QPainter, rect: QRectF, th: Theme, interactive: bool = True) -> None:
         p.save()
         p.fillRect(rect, qcolor(th.bg))
         plot, xr, yr, series = self.geometry(rect if not interactive else None)
@@ -256,14 +258,6 @@ class RectPlot(PlotView):
         for si, s in enumerate(series):
             self._draw_series(p, s, si, plot, xr, yr, interactive)
         self._draw_hlines(p, plot, yr, th)
-        self.draw_overlay(p, plot, xr, yr, th, interactive)
-        if self.supports_markers:
-            self._draw_markers(p, plot, xr, yr, th, series)
-        if interactive and self._rb:
-            D.draw_rubber(p, QRectF(self._rb[0], self._rb[1]), th)
-        if interactive and self._hover is not None and plot.contains(self._hover) and not self._rb:
-            p.setPen(QPen(qcolor(th.text_dim), 1, Qt.PenStyle.DotLine))
-            p.drawLine(QPointF(self._hover.x(), plot.top()), QPointF(self._hover.x(), plot.bottom()))
         p.restore()
         p.setPen(QPen(qcolor(th.axis), 1))
         p.setBrush(Qt.BrushStyle.NoBrush)
@@ -273,12 +267,26 @@ class RectPlot(PlotView):
             p.setFont(D.font(13))
             p.drawText(plot, Qt.AlignmentFlag.AlignCenter,
                        "Nessuna traccia — apri un file (Ctrl+O) o trascinalo qui")
+        p.restore()
+
+    def draw_dynamic(self, p: QPainter, rect: QRectF, th: Theme, interactive: bool = True) -> None:
+        plot, xr, yr, series = self.geometry(rect if not interactive else None)
+        p.save()
+        p.setClipRect(plot)
+        self.draw_overlay(p, plot, xr, yr, th, interactive)
+        if self.supports_markers:
+            self._draw_markers(p, plot, xr, yr, th, series)
+        if interactive and self._rb:
+            D.draw_rubber(p, QRectF(self._rb[0], self._rb[1]), th)
+        if interactive and self._hover is not None and plot.contains(self._hover) and not self._rb:
+            p.setPen(QPen(qcolor(th.text_dim), 1, Qt.PenStyle.DotLine))
+            p.drawLine(QPointF(self._hover.x(), plot.top()), QPointF(self._hover.x(), plot.bottom()))
+        p.restore()
         if self.show_legend and series:
             D.draw_legend(p, plot, [(s.color, s.label) for s in series], th,
                           avoid=self._readouts_rect(plot, th, series))
         if self.supports_markers:
             self._draw_readouts(p, plot, th, series)
-        p.restore()
 
     def draw_overlay(self, p, plot, xr, yr, th, interactive) -> None:
         """Hook per sottoclassi (gate del dominio del tempo...)."""
@@ -381,7 +389,8 @@ class RectPlot(PlotView):
             p.drawText(QPointF(plot.left() + 4, y - 3), D.format_value(self.y_kind_for_format(), v))
 
     def _polys_for(self, s: Series, si: int, plot: QRectF, xr, yr) -> list[QPolygonF]:
-        key = (si, plot.width(), plot.height(), xr, yr, self.xlog)
+        fast = self._fast_render
+        key = (si, plot.width(), plot.height(), xr, yr, self.xlog, fast)
         hit = self._poly_cache.get(key)
         if hit is not None:
             return hit
@@ -398,7 +407,7 @@ class RectPlot(PlotView):
             px = D.clamp_px(self.x2px(x, plot, xr))
             py = D.clamp_px(self.y2px(y, plot, yr))
             if px.size > 3 * plot.width():
-                px, py = minmax_decimate(px, py)
+                px, py = minmax_decimate(px, py, fast)
             valid = np.isfinite(py)
             for a, b in runs_of_valid(valid):
                 if b - a >= 1:
@@ -412,7 +421,7 @@ class RectPlot(PlotView):
         polys = self._polys_for(s, si, plot, xr, yr)
         pen = QPen(qcolor(s.color), s.width)
         pen.setCapStyle(Qt.PenCapStyle.RoundCap)
-        pen.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
+        pen.setJoinStyle(Qt.PenJoinStyle.BevelJoin)
         if s.dashed:
             pen.setStyle(Qt.PenStyle.DashLine)
         p.setPen(pen)
@@ -579,7 +588,7 @@ class RectPlot(PlotView):
                 self.setCursor(Qt.CursorShape.SizeHorCursor)
             elif not self._pan:
                 self.setCursor(Qt.CursorShape.CrossCursor)
-        self.update()
+        self.update_overlay()
 
     def _nearest_for_marker(self, pos: QPointF):
         """Durante il trascinamento resta sulla traccia del marker."""
@@ -612,7 +621,7 @@ class RectPlot(PlotView):
             elif not self._moved and ev.button() == Qt.MouseButton.LeftButton and plot.contains(pos):
                 self._click(pos, bool(self._press_mods & Qt.KeyboardModifier.ControlModifier))
         self._press_pos = None
-        self.update()
+        self.update_overlay()
 
     def _click(self, pos: QPointF, new_marker: bool) -> None:
         if not self.supports_markers:
@@ -634,7 +643,7 @@ class RectPlot(PlotView):
 
     def leaveEvent(self, ev) -> None:
         self._hover = None
-        self.update()
+        self.update_overlay()
 
     def wheelEvent(self, ev) -> None:
         plot, xr, yr, _ = self.geometry()

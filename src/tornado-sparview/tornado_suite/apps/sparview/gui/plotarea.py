@@ -217,7 +217,7 @@ class PlotPanel(QFrame):
         self.view().refresh()
 
     def update_markers(self) -> None:
-        self.view().update()
+        self.view().update_overlay()
 
     def _auto(self) -> None:
         v = self.view()

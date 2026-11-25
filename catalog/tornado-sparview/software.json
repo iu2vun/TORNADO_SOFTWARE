@@ -15,8 +15,8 @@
     "IFFT con finestra, asse in distanza e time gating",
     "Math, P1dB e scheda Info"
   ],
-  "version": "0.1.0",
-  "released": "2026-11-15",
+  "version": "0.1.1",
+  "released": "2026-11-25",
   "platforms": [
     "Windows 10/11 x64"
   ],
@@ -24,9 +24,9 @@
   "downloads": [
     {
       "label": "Installer Windows",
-      "file": "TornadoSParView-Setup-0.1.0.exe",
+      "file": "TornadoSParView-Setup-0.1.1.exe",
       "platform": "Windows",
-      "sha256": "129837d11681f13529cb8fb1cf0517aaf8b652829716202c372c782b981a8962"
+      "sha256": "10513d823c4e9484f8093c08b10a9b24583311008be6b14b18e0732bb60ea00f"
     },
     {
       "label": "Manuale PDF",
@@ -36,15 +36,22 @@
     },
     {
       "label": "Sorgenti Python (zip)",
-      "file": "tornado-sparview-sorgenti-0.1.0.zip",
+      "file": "tornado-sparview-sorgenti-0.1.1.zip",
       "platform": "Python",
-      "sha256": "d4c7183d05f3ef729e456bb8c4a8b23b18097ba6cfbb34dd51be2ac29f0fa2fe"
+      "sha256": "07035049ed513d69ae0133a918250baf998c3507ad1c9994728059d5bf668ef2"
     }
   ],
   "screenshots": [
     "img/01_sparview.png"
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-11-25",
+      "notes": [
+        "Aggiornamento."
+      ]
+    },
     {
       "version": "0.1.0",
       "date": "2026-11-15",
